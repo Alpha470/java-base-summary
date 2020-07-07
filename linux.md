@@ -23,3 +23,8 @@
 ##### 5.vmstat -n 2 3 包含但不限于
 
 ##### 6.iostat -xdk 2 3 磁盘io
+
+### 分布式锁的三种实现方式
+1.mysql乐观锁
+2.redis redission
+3.zookeeper
