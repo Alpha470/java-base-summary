@@ -7,7 +7,7 @@
 #### 4、JdbcTemplate
 #### 5、事务管理
 #### 6、Spring5 新特性
-== Spring5框架概述 ==
+**加粗文本** __Spring5框架概述__
 1. Spring 是轻量级的开源的 JavaEE 框架
 2. Spring 可以解决企业应用开发的复杂性
 3. Spring 有两个核心部分：IOC 和 Aop
@@ -21,7 +21,8 @@
 （5）方便进行事务操作
 （6）降低 API 开发难度
 5. 现在课程中，选取 Spring 版本 5.x
-==Spring5 入门案例==
+**加粗文本** __加粗文本__
+Spring5 入门案例==
 1、下载 Spring5
 （1）使用 Spring 最新稳定版本 5.2.6
 （2）下载地址
