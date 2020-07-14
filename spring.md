@@ -7,7 +7,7 @@
 #### 4、JdbcTemplate
 #### 5、事务管理
 #### 6、Spring5 新特性
-==Spring5框架概述==
+== Spring5框架概述 ==
 1. Spring 是轻量级的开源的 JavaEE 框架
 2. Spring 可以解决企业应用开发的复杂性
 3. Spring 有两个核心部分：IOC 和 Aop
@@ -25,7 +25,7 @@
 1、下载 Spring5
 （1）使用 Spring 最新稳定版本 5.2.6
 （2）下载地址
-https://repo.spring.io/release/org/springframework/spring/
+[link](https://repo.spring.io/release/org/springframework/spring/)
 2、打开 idea 工具，创建普通 Java 工程
 3、导入 Spring5 相关 jar 包
 4、创建普通类，在这个类创建普通方法
@@ -34,13 +34,16 @@ public void add() {
 System.out.println("add......");
 } }5、创建 Spring 配置文件，在配置文件配置创建的对象
 （1）Spring 配置文件使用 xml 格式
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.springframework.org/schema/beans 
 http://www.springframework.org/schema/beans/spring-beans.xsd">
 <!--配置 User 对象创建--> <bean id="user" class="com.atguigu.spring5.User"></bean>
+```
 </beans> 6、进行测试代码编写
+```
 @Test
 public void testAdd() {
 //1 加载 spring 配置文件
@@ -51,6 +54,7 @@ User user = context.getBean("user", User.class);
 System.out.println(user);
 user.add();
 }
+```
 IOC（概念和原理）
 1、什么是 IOC
 （1）控制反转，把对象创建和对象之间的调用过程，交给 Spring 进行管理
