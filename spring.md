@@ -20,20 +20,21 @@
 - （4）方便和其他框架进行整合
 - （5）方便进行事务操作
 - （6）降低 API 开发难度
-5. 现在课程中，选取 Spring 版本 5.x
-**加粗文本** __加粗文本__
-Spring5 入门案例==
-1、下载 Spring5
+**Spring5 入门案例**
+1. 下载 Spring5
 （1）使用 Spring 最新稳定版本 5.2.6
 （2）下载地址
 [link](https://repo.spring.io/release/org/springframework/spring/)
-2、打开 idea 工具，创建普通 Java 工程
-3、导入 Spring5 相关 jar 包
-4、创建普通类，在这个类创建普通方法
+2. 打开 idea 工具，创建普通 Java 工程
+3. 导入 Spring5 相关 jar 包
+4、. 创建普通类，在这个类创建普通方法
+```
 public class User {
 public void add() {
 System.out.println("add......");
-} }5、创建 Spring 配置文件，在配置文件配置创建的对象
+} }
+```
+5. 创建 Spring 配置文件，在配置文件配置创建的对象
 （1）Spring 配置文件使用 xml 格式
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -57,13 +58,13 @@ user.add();
 }
 ```
 IOC（概念和原理）
-1、什么是 IOC
+1. 什么是 IOC
 （1）控制反转，把对象创建和对象之间的调用过程，交给 Spring 进行管理
 （2）使用 IOC 目的：为了耦合度降低
 （3）做入门案例就是 IOC 实现
-2、IOC 底层原理
+2. IOC 底层原理
 （1）xml 解析、工厂模式、反射
-3、画图讲解 IOC 底层原理
+3. 画图讲解 IOC 底层原理
 IOC（BeanFactory 接口）
 1、IOC 思想基于 IOC 容器完成，IOC 容器底层就是对象工厂
 2、Spring 提供 IOC 容器实现两种方式：（两个接口）
@@ -92,6 +93,7 @@ IOC 操作 Bean 管理（基于 xml 方式）
 （1）DI：依赖注入，就是注入属性
 3、第一种注入方式：使用 set 方法进行注入
 （1）创建类，定义属性和对应的 set 方法
+```
 /**
 * 演示使用 set 方法进行注入属性
 */
@@ -105,7 +107,9 @@ this.bname = bname;
 }
 public void setBauthor(String bauthor) {
 this.bauthor = bauthor;
-} }（2）在 spring 配置文件配置对象创建，配置属性注入
+} }
+```
+（2）在 spring 配置文件配置对象创建，配置属性注入
 <!--2 set 方法注入属性--> <bean id="book" class="com.atguigu.spring5.Book">
 <!--使用 property 完成属性注入
 name：类里面属性名称
@@ -113,6 +117,7 @@ value：向属性注入的值
 --><property name="bname" value="易筋经"></property> <property name="bauthor" value="达摩老祖"></property>
 </bean> 4、第二种注入方式：使用有参数构造进行注入
 （1）创建类，定义属性，创建属性对应有参数构造方法
+```
 /**
 * 使用有参数构造注入
 */
@@ -124,19 +129,28 @@ private String address;
 public Orders(String oname,String address) {
 this.oname = oname;
 this.address = address;
-} }（2）在 spring 配置文件中进行配置
-<!--3 有参数构造注入属性--> <bean id="orders" class="com.atguigu.spring5.Orders"> <constructor-arg name="oname" value="电脑"></constructor-arg> <constructor-arg name="address" value="China"></constructor-arg>
-</bean> 5、p 名称空间注入（了解）
+} }
+```
+（2）在 spring 配置文件中进行配置
+```
+<!--3 有参数构造注入属性--> 
+<bean id="orders" class="com.atguigu.spring5.Orders"> <constructor-arg name="oname" value="电脑"></constructor-arg> <constructor-arg name="address" value="China"></constructor-arg>
+</bean> 
+```
+5、p 名称空间注入（了解）
 （1）使用 p 名称空间注入，可以简化基于 xml 配置方式
 第一步 添加 p 名称空间在配置文件中
 第二步 进行属性注入，在 bean 标签里面进行操作
-<!--2 set 方法注入属性--> <bean id="book" class="com.atguigu.spring5.Book" p:bname="九阳神功" 
-p:bauthor="无名氏"></bean>
+```
+<!--2 set 方法注入属性-->
+<bean id="book" class="com.atguigu.spring5.Book" p:bname="九阳神功"  p:bauthor="无名氏"></bean>
+```
 IOC 操作 Bean 管理（xml 注入其他类型属性）
 1、字面量
 （1）null 值
 <!--null 值--> <property name="address"> <null/>
-</property> （2）属性值包含特殊符号
+</property> 
+（2）属性值包含特殊符号
 <!--属性值包含特殊符号
 1 把<>进行转义 &lt; &gt;
 2 把带特殊符号内容写到 CDATA
@@ -144,6 +158,7 @@ IOC 操作 Bean 管理（xml 注入其他类型属性）
 </property> 2、注入属性-外部 bean
 （1）创建两个类 service 类和 dao 类 （2）在 service 调用 dao 里面的方法
 （3）在 spring 配置文件中进行配置
+```
 public class UserService {
 //创建 UserDao 类型属性，生成 set 方法
 private UserDao userDao;
@@ -154,6 +169,7 @@ public void add() {
 System.out.println("service add...............");
 userDao.update();
 } }
+```
 <!--1 service 和 dao 对象创建--> <bean id="userService" class="com.atguigu.spring5.service.UserService">
 <!--注入 userDao 对象
 name 属性：类里面属性名称
@@ -164,6 +180,7 @@ ref 属性：创建 userDao 对象 bean 标签 id 值
 一个部门有多个员工，一个员工属于一个部门
 部门是一，员工是多
 （2）在实体类之间表示一对多关系，员工表示所属部门，使用对象类型属性进行表示
+```
 //部门类
 public class Dept {
 private String dname;
@@ -184,30 +201,41 @@ this.ename = ename;
 }
 public void setGender(String gender) {
 this.gender = gender;
-} }（3）在 spring 配置文件中进行配置
+} }
+```
+（3）在 spring 配置文件中进行配置
+```
 <!--内部 bean--> <bean id="emp" class="com.atguigu.spring5.bean.Emp">
 <!--设置两个普通属性--> <property name="ename" value="lucy"></property> <property name="gender" value="女"></property>
 <!--设置对象类型属性--> <property name="dept"> <bean id="dept" class="com.atguigu.spring5.bean.Dept"> <property name="dname" value="安保部"></property>
 </bean>
 </property>
-</bean> 4、注入属性-级联赋值
+</bean>
+```
+4、注入属性-级联赋值
 （1）第一种写法
+```
 <!--级联赋值--> <bean id="emp" class="com.atguigu.spring5.bean.Emp">
 <!--设置两个普通属性--> <property name="ename" value="lucy"></property> <property name="gender" value="女"></property>
 <!--级联赋值--> <property name="dept" ref="dept"></property>
 </bean> <bean id="dept" class="com.atguigu.spring5.bean.Dept"> <property name="dname" value="财务部"></property>
-</bean> （2）第二种写法
+</bean>
+```
+（2）第二种写法
+```
 <!--级联赋值--> <bean id="emp" class="com.atguigu.spring5.bean.Emp">
 <!--设置两个普通属性--> <property name="ename" value="lucy"></property>
 <property name="gender" value="女"></property>
 <!--级联赋值--> <property name="dept" ref="dept"></property> <property name="dept.dname" value="技术部"></property>
 </bean> <bean id="dept" class="com.atguigu.spring5.bean.Dept"> <property name="dname" value="财务部"></property>
 </bean>
+```
 IOC 操作 Bean 管理（xml 注入集合属性）
 1、注入数组类型属性
 2、注入 List 集合类型属性
 3、注入 Map 集合类型属性
 （1）创建类，定义数组、list、map、set 类型属性，生成对应 set 方法
+```
 public class Stu {
 //1 数组类型属性
 private String[] courses;
@@ -228,7 +256,10 @@ this.list = list;
 }
 public void setMaps(Map<String, String> maps) {
 this.maps = maps;
-} }（2）在 spring 配置文件进行配置
+} }
+```
+（2）在 spring 配置文件进行配置
+```
 <!--1 集合类型属性注入--> <bean id="stu" class="com.atguigu.spring5.collectiontype.Stu">
 <!--数组类型属性注入--> <property name="courses"> <array> <value>java 课程</value> <value>数据库课程</value>
 </array>
@@ -243,14 +274,20 @@ this.maps = maps;
 <!--set 类型属性注入--> <property name="sets"> <set><value>MySQL</value> <value>Redis</value>
 </set>
 </property>
-</bean> 4、在集合里面设置对象类型值
+</bean>
+```
+4、在集合里面设置对象类型值
+```
 <!--创建多个 course 对象--> <bean id="course1" class="com.atguigu.spring5.collectiontype.Course"> <property name="cname" value="Spring5 框架"></property>
 </bean> <bean id="course2" class="com.atguigu.spring5.collectiontype.Course"> <property name="cname" value="MyBatis 框架"></property>
 </bean>
 <!--注入 list 集合类型，值是对象--> <property name="courseList"> <list><ref bean="course1"></ref> <ref bean="course2"></ref>
 </list>
-</property> 5、把集合注入部分提取出来
+</property> 
+```
+5、把集合注入部分提取出来
 （1）在 spring 配置文件中引入名称空间 util
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -265,10 +302,12 @@ http://www.springframework.org/schema/util/spring-util.xsd"> （2）使用 util 
 </util:list>
 <!--2 提取 list 集合类型属性注入使用--> <bean id="book" class="com.atguigu.spring5.collectiontype.Book"> <property name="list" ref="bookList"></property>
 </bean>
+```
 IOC 操作 Bean 管理（FactoryBean） 1、Spring 有两种类型 bean，一种普通 bean，另外一种工厂 bean（FactoryBean） 2、普通 bean：在配置文件中定义 bean 类型就是返回类型
 3、工厂 bean：在配置文件定义 bean 类型可以和返回类型不一样
 第一步 创建类，让这个类作为工厂 bean，实现接口 FactoryBean
 第二步 实现接口里面的方法，在实现的方法中定义返回的 bean 类型
+```
 public class MyBean implements FactoryBean<Course> {
 //定义返回 bean
 @Override
@@ -291,6 +330,7 @@ new ClassPathXmlApplicationContext("bean3.xml");
 Course course = context.getBean("myBean", Course.class);
 System.out.println(course);
 }
+```
 IOC 操作 Bean 管理（bean 作用域）
 1、在 Spring 里面，设置创建 bean 实例是单实例还是多实例
 2、在 Spring 里面，默认情况下，bean 是单实例对象
@@ -314,6 +354,7 @@ IOC 操作 Bean 管理（bean 生命周期）
 （4）bean 可以使用了（对象获取到了）
 （5）当容器关闭时候，调用 bean 的销毁的方法（需要进行配置销毁的方法）
 3、演示 bean 生命周期
+```
 public class Orders {
 //无参数构造
 public Orders() {
@@ -344,7 +385,9 @@ System.out.println("第四步 获取创建 bean 实例对象");
 System.out.println(orders);
 //手动让 bean 实例销毁
 context.close();
-} 4、bean 的后置处理器，bean 生命周期有七步
+} 
+```
+4、bean 的后置处理器，bean 生命周期有七步
 （1）通过构造器创建 bean 实例（无参数构造）
 （2）为 bean 的属性设置值和对其他 bean 引用（调用 set 方法）
 （3）把 bean 实例传递 bean 后置处理器的方法 postProcessBeforeInitialization
@@ -354,6 +397,7 @@ context.close();
 （7）当容器关闭时候，调用 bean 的销毁的方法（需要进行配置销毁的方法）
 5、演示添加后置处理器效果
 （1）创建类，实现接口 BeanPostProcessor，创建后置处理器
+```
 public class MyBeanPost implements BeanPostProcessor {
 @Override
 public Object postProcessBeforeInitialization(Object bean, String beanName) 
@@ -367,7 +411,10 @@ throws BeansException {
 System.out.println("在初始化之后执行的方法");
 return bean;
 } }
+```
+```
 <!--配置后置处理器--> <bean id="myBeanPost" class="com.atguigu.spring5.bean.MyBeanPost"></bean>
+```
 IOC 操作 Bean 管理（xml 自动装配）
 1、什么是自动装配
 （1）根据指定装配规则（属性名称或者属性类型），Spring 自动将匹配的属性值进行注入
