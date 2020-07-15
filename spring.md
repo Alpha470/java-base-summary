@@ -1,101 +1,115 @@
-## Spring5 框架
-#### 1、Spring 框架概述
-#### 2、IOC 容器
-（1）IOC 底层原理
-（2）IOC 接口（BeanFactory） （3）IOC 操作 Bean 管理（基于 xml） （4）IOC 操作 Bean 管理（基于注解）
-#### 3、Aop
-#### 4、JdbcTemplate
-#### 5、事务管理
-#### 6、Spring5 新特性
-**Spring5框架概述** 
-1. Spring 是轻量级的开源的 JavaEE 框架
-2. Spring 可以解决企业应用开发的复杂性
-3. Spring 有两个核心部分：IOC 和 Aop
-- （1）IOC：控制反转，把创建对象过程交给 Spring 进行管理
-- （2）Aop：面向切面，不修改源代码进行功能增强
-4. Spring 特点
-- （1）方便解耦，简化开发
-- （2）Aop 编程支持
-- （3）方便程序测试
-- （4）方便和其他框架进行整合
-- （5）方便进行事务操作
-- （6）降低 API 开发难度
-**Spring5 入门案例**
-1. 下载 Spring5
+# Spring 框架
+**1、Spring 框架概述**
+**2、IOC 容器**
+
+    （1）IOC 底层原理
+    （2）IOC 接口（BeanFactory）
+    （3）IOC 操作 Bean 管理（基于 xml）
+    （4）IOC 操作 Bean 管理（基于注解）
+**3、Aop**
+**4、JdbcTemplate**
+**5、事务管理**
+**6、Spring5 新特性**
+
+# Spring框架概述
+ - Spring 是轻量级的开源的 JavaEE 框架
+ - Spring 可以解决企业应用开发的复杂性
+ - Spring 有两个核心部分：**IOC** 和 **Aop**
+  （1）IOC：控制反转，把创建对象过程交给 Spring 进行管理
+  （2）Aop：面向切面，不修改源代码进行功能增强
+ - Spring 特点
+  （1）方便解耦，简化开发
+  （2）Aop 编程支持
+  （3）方便程序测试
+  （4）方便和其他框架进行整合
+  （5）方便进行事务操作
+  （6）降低 API 开发难度
+## Spring 入门案例
+ 下载 Spring
 （1）使用 Spring 最新稳定版本 5.2.6
-（2）下载地址
-[link](https://repo.spring.io/release/org/springframework/spring/)
-2. 打开 idea 工具，创建普通 Java 工程
-3. 导入 Spring5 相关 jar 包
-4、. 创建普通类，在这个类创建普通方法
+（2）下载地址[link](https://repo.spring.io/release/org/springframework/spring/)
+（3）打开 idea 工具，创建普通 Java 工程，导入 Spring 相关 jar 包
+（4） 创建普通类，在这个类创建普通方法
 ```
 public class User {
-public void add() {
-System.out.println("add......");
-} }
+    public void add() {
+        System.out.println("add......");
+    } 
+}
 ```
-5. 创建 Spring 配置文件，在配置文件配置创建的对象
-（1）Spring 配置文件使用 xml 格式
+（5）创建 Spring 配置文件，在配置文件配置创建的对象（Spring 配置文件使用 xml 格式）
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.springframework.org/schema/beans 
 http://www.springframework.org/schema/beans/spring-beans.xsd">
-<!--配置 User 对象创建--> <bean id="user" class="com.atguigu.spring5.User"></bean>
+<!--配置 User 对象创建--> 
+<bean id="user" class="com.atguigu.spring5.User"></bean>
 ```
-</beans> 6、进行测试代码编写
+ （6）进行测试代码编写
 ```
 @Test
 public void testAdd() {
 //1 加载 spring 配置文件
-ApplicationContext context =
-new ClassPathXmlApplicationContext("bean1.xml");
-//2 获取配置创建的对象
-User user = context.getBean("user", User.class);
-System.out.println(user);
-user.add();
+    ApplicationContext context =new ClassPathXmlApplicationContext("bean1.xml");
+    //2 获取配置创建的对象
+    User user = context.getBean("user", User.class);
+    System.out.println(user);
+    user.add();
 }
 ```
-IOC（概念和原理）
-1. 什么是 IOC
+## IOC（概念和原理）
+ **什么是 IOC**
 （1）控制反转，把对象创建和对象之间的调用过程，交给 Spring 进行管理
 （2）使用 IOC 目的：为了耦合度降低
 （3）做入门案例就是 IOC 实现
-2. IOC 底层原理
+ **IOC 底层原理**
 （1）xml 解析、工厂模式、反射
-3. 画图讲解 IOC 底层原理
-IOC（BeanFactory 接口）
+  **画图讲解 IOC 底层原理**
+  
+  
+**IOC（BeanFactory 接口）**
 1、IOC 思想基于 IOC 容器完成，IOC 容器底层就是对象工厂
 2、Spring 提供 IOC 容器实现两种方式：（两个接口）
 （1）BeanFactory：IOC 容器基本实现，是 Spring 内部的使用接口，不提供开发人员进行使用
-* 加载配置文件时候不会创建对象，在获取对象（使用）才去创建对象
+ - 加载配置文件时候不会创建对象，在获取对象（使用）才去创建对象
 （2）ApplicationContext：BeanFactory 接口的子接口，提供更多更强大的功能，一般由开发人
-员进行使用
-* 加载配置文件时候就会把在配置文件对象进行创建
+员进行使用 ,加载配置文件时候就会把在配置文件对象进行创建
 3、ApplicationContext 接口有实现类
-IOC 操作 Bean 管理（概念）
-1、什么是 Bean 管理
-（0）Bean 管理指的是两个操作
-（1）Spring 创建对象
-（2）Spirng 注入属性
-2、Bean 管理操作有两种方式
-（1）基于 xml 配置文件方式实现
-（2）基于注解方式实现
-IOC 操作 Bean 管理（基于 xml 方式）
-1、基于 xml 方式创建对象
+
+**IOC 操作 Bean 管理（概念）**
+
+> **1、什么是 Bean 管理**
+
+Bean 管理指的是两个操作（1）Spring 创建对象（2）Spirng 注入属性
+
+> **2、Bean 管理操作有两种方式**
+
+（1）基于 xml 配置文件方式实现（2）基于注解方式实现
+
+## **IOC 操作 Bean 管理（基于 xml 方式）**
+
+> **1、基于 xml 方式创建对象**
+
 （1）在 spring 配置文件中，使用 bean 标签，标签里面添加对应属性，就可以实现对象创建
 （2）在 bean 标签有很多属性，介绍常用的属性
-* id 属性：唯一标识
-* class 属性：类全路径（包类路径）
+  
+ - id 属性：唯一标识  
+ - class 属性：类全路径（包类路径）
+
 （3）创建对象时候，默认也是执行无参数构造方法完成对象创建
-2、基于 xml 方式注入属性
-（1）DI：依赖注入，就是注入属性
-3、第一种注入方式：使用 set 方法进行注入
+
+> **2、基于 xml 方式注入属性**
+
+DI：依赖注入，就是注入属性
+
+> **3、第一种注入方式：使用 set 方法进行注入**
+
 （1）创建类，定义属性和对应的 set 方法
 ```
 /**
-* 演示使用 set 方法进行注入属性
+ - 演示使用 set 方法进行注入属性
 */
 public class Book {
 //创建属性
@@ -103,23 +117,28 @@ private String bname;
 private String bauthor;
 //创建属性对应的 set 方法
 public void setBname(String bname) {
-this.bname = bname;
+    this.bname = bname;
 }
 public void setBauthor(String bauthor) {
-this.bauthor = bauthor;
-} }
+    this.bauthor = bauthor;
+    } 
+}
 ```
 （2）在 spring 配置文件配置对象创建，配置属性注入
-<!--2 set 方法注入属性--> <bean id="book" class="com.atguigu.spring5.Book">
-<!--使用 property 完成属性注入
-name：类里面属性名称
-value：向属性注入的值
---><property name="bname" value="易筋经"></property> <property name="bauthor" value="达摩老祖"></property>
-</bean> 4、第二种注入方式：使用有参数构造进行注入
+
+    <!--2 set 方法注入属性-->
+    <bean id="book" class="com.atguigu.spring5.Book">
+    <!--使用 property 完成属性注入name：类里面属性名称value：向属性注入的值-->
+        <property name="bname" value="易筋经"></property> 
+        <property name="bauthor" value="达摩老祖"></property>
+    </bean>
+
+>  **4、第二种注入方式：使用有参数构造进行注入**
+
 （1）创建类，定义属性，创建属性对应有参数构造方法
 ```
 /**
-* 使用有参数构造注入
+ - 使用有参数构造注入
 */
 public class Orders {
 //属性
@@ -127,17 +146,24 @@ private String oname;
 private String address;
 //有参数构造
 public Orders(String oname,String address) {
-this.oname = oname;
-this.address = address;
-} }
+    this.oname = oname;
+    this.address = address;
+    }
+}
 ```
 （2）在 spring 配置文件中进行配置
 ```
 <!--3 有参数构造注入属性--> 
-<bean id="orders" class="com.atguigu.spring5.Orders"> <constructor-arg name="oname" value="电脑"></constructor-arg> <constructor-arg name="address" value="China"></constructor-arg>
+<bean id="orders" class="com.atguigu.spring5.Orders">  
+    <constructor-arg name="oname" value="电脑"></constructor-arg>
+    <constructor-arg name="address" value="China"></constructor-arg>
 </bean> 
 ```
-5、p 名称空间注入（了解）
+
+ 
+
+> **5、p 名称空间注入（了解）**
+
 （1）使用 p 名称空间注入，可以简化基于 xml 配置方式
 第一步 添加 p 名称空间在配置文件中
 第二步 进行属性注入，在 bean 标签里面进行操作
@@ -145,48 +171,57 @@ this.address = address;
 <!--2 set 方法注入属性-->
 <bean id="book" class="com.atguigu.spring5.Book" p:bname="九阳神功"  p:bauthor="无名氏"></bean>
 ```
-IOC 操作 Bean 管理（xml 注入其他类型属性）
-1、字面量
+## **IOC 操作 Bean 管理（xml 注入其他类型属性）**
+**1、字面量**
 （1）null 值
-<!--null 值--> <property name="address"> <null/>
-</property> 
+
+    <!--null 值--> 
+    <property name="address"> <null/></property> 
+
 （2）属性值包含特殊符号
-<!--属性值包含特殊符号
-1 把<>进行转义 &lt; &gt;
-2 把带特殊符号内容写到 CDATA
---><property name="address"> <value><![CDATA[<<南京>>]]></value>
-</property> 2、注入属性-外部 bean
-（1）创建两个类 service 类和 dao 类 （2）在 service 调用 dao 里面的方法
+
+    <!--属性值包含特殊符号
+    1 把<>进行转义   `&lt; &gt;`
+    2 把带特殊符号内容写到 CDATA
+    -->
+    <property name="address"> <value><![CDATA[<<南京>>]]></value></property>
+
+**2、注入属性-外部 bean**
+（1）创建两个类 service 类和 dao 类 
+（2）在 service 调用 dao 里面的方法
 （3）在 spring 配置文件中进行配置
 ```
 public class UserService {
-//创建 UserDao 类型属性，生成 set 方法
-private UserDao userDao;
-public void setUserDao(UserDao userDao) {
-this.userDao = userDao;
+    //创建 UserDao 类型属性，生成 set 方法
+    private UserDao userDao;
+    public void setUserDao(UserDao userDao) {
+    this.userDao = userDao;
 }
 public void add() {
-System.out.println("service add...............");
-userDao.update();
-} }
+    System.out.println("service add...............");
+    userDao.update();
+    } 
+}
+
+<!--1 service 和 dao 对象创建--> 
+<bean id="userService" class="com.atguigu.spring5.service.UserService">
+<!--注入 userDao 对象。name 属性：类里面属性名称；ref 属性：创建userDao 对象 bean 标签 id 值-->
+    <property name="userDao" ref="userDaoImpl"></property>
+</bean> 
+<bean id="userDaoImpl"  class="com.atguigu.spring5.dao.UserDaoImpl"></bean>
 ```
-<!--1 service 和 dao 对象创建--> <bean id="userService" class="com.atguigu.spring5.service.UserService">
-<!--注入 userDao 对象
-name 属性：类里面属性名称
-ref 属性：创建 userDao 对象 bean 标签 id 值
---><property name="userDao" ref="userDaoImpl"></property>
-</bean> <bean id="userDaoImpl" class="com.atguigu.spring5.dao.UserDaoImpl"></bean> 3、注入属性-内部 bean
+**3、注入属性-内部 bean**
 （1）一对多关系：部门和员工
-一个部门有多个员工，一个员工属于一个部门
-部门是一，员工是多
+    一个部门有多个员工，一个员工属于一个部门。部门是一，员工是多
 （2）在实体类之间表示一对多关系，员工表示所属部门，使用对象类型属性进行表示
 ```
 //部门类
 public class Dept {
 private String dname;
 public void setDname(String dname) {
-this.dname = dname;
-} }
+    this.dname = dname;
+    }
+}
 //员工类
 public class Emp {
 private String ename;
@@ -194,95 +229,142 @@ private String gender;
 //员工属于某一个部门，使用对象形式表示
 private Dept dept;
 public void setDept(Dept dept) {
-this.dept = dept;
-}
+    this.dept = dept;
+    }
 public void setEname(String ename) {
-this.ename = ename;
+    this.ename = ename;
 }
 public void setGender(String gender) {
-this.gender = gender;
-} }
+    this.gender = gender;
+   } 
+}
 ```
+
 （3）在 spring 配置文件中进行配置
 ```
-<!--内部 bean--> <bean id="emp" class="com.atguigu.spring5.bean.Emp">
-<!--设置两个普通属性--> <property name="ename" value="lucy"></property> <property name="gender" value="女"></property>
-<!--设置对象类型属性--> <property name="dept"> <bean id="dept" class="com.atguigu.spring5.bean.Dept"> <property name="dname" value="安保部"></property>
-</bean>
-</property>
+<!--内部 bean-->
+<bean id="emp" class="com.atguigu.spring5.bean.Emp">
+    <!--设置两个普通属性--> 
+    5property name="ename" value="lucy"></property>
+    <property name="gender" value="女"></property>
+    <!--设置对象类型属性--> 
+    <property name="dept">
+        <bean id="dept" class="com.atguigu.spring5.bean.Dept">
+            <property name="dname" value="安保部"></property>
+        </bean>
+    </property>
 </bean>
 ```
 4、注入属性-级联赋值
 （1）第一种写法
 ```
-<!--级联赋值--> <bean id="emp" class="com.atguigu.spring5.bean.Emp">
-<!--设置两个普通属性--> <property name="ename" value="lucy"></property> <property name="gender" value="女"></property>
-<!--级联赋值--> <property name="dept" ref="dept"></property>
-</bean> <bean id="dept" class="com.atguigu.spring5.bean.Dept"> <property name="dname" value="财务部"></property>
+<!--级联赋值-->
+<bean id="emp" class="com.atguigu.spring5.bean.Emp">
+    <!--设置两个普通属性-->
+    <property name="ename" value="lucy"></property> 
+    <property name="gender" value="女"></property>
+    <!--级联赋值--> 
+    <property name="dept" ref="dept"></property>
+</bean> 
+<bean id="dept" class="com.atguigu.spring5.bean.Dept"> 
+    <property name="dname" value="财务部"></property>
 </bean>
 ```
 （2）第二种写法
 ```
-<!--级联赋值--> <bean id="emp" class="com.atguigu.spring5.bean.Emp">
-<!--设置两个普通属性--> <property name="ename" value="lucy"></property>
-<property name="gender" value="女"></property>
-<!--级联赋值--> <property name="dept" ref="dept"></property> <property name="dept.dname" value="技术部"></property>
-</bean> <bean id="dept" class="com.atguigu.spring5.bean.Dept"> <property name="dname" value="财务部"></property>
+<!--级联赋值--> 
+<bean id="emp" class="com.atguigu.spring5.bean.Emp">
+    <!--设置两个普通属性--> 
+    <property name="ename" value="lucy"></property>
+    <property name="gender" value="女"></property>
+    <!--级联赋值-->
+    <property name="dept" ref="dept"></property>
+    <property name="dept.dname" value="技术部"></property>
+</bean>
+<bean id="dept" class="com.atguigu.spring5.bean.Dept"> 
+    <property name="dname" value="财务部"></property>
 </bean>
 ```
-IOC 操作 Bean 管理（xml 注入集合属性）
+##**IOC 操作 Bean 管理（xml 注入集合属性）**
 1、注入数组类型属性
 2、注入 List 集合类型属性
 3、注入 Map 集合类型属性
 （1）创建类，定义数组、list、map、set 类型属性，生成对应 set 方法
 ```
 public class Stu {
-//1 数组类型属性
-private String[] courses;
-//2 list 集合类型属性
-private List<String> list;
-//3 map 集合类型属性
-private Map<String,String> maps;
-//4 set 集合类型属性
-private Set<String> sets;
-public void setSets(Set<String> sets) {
-this.sets = sets;
+    //1 数组类型属性
+    private String[] courses;
+    //2 list 集合类型属性
+    private List<String> list;
+    //3 map 集合类型属性
+    private Map<String,String> maps;
+    //4 set 集合类型属性
+    private Set<String> sets;
+    
+    public void setSets(Set<String> sets) {
+        this.sets = sets;
+    }
+    
+    public void setCourses(String[] courses) {
+        this.courses = courses;
+    }
+    
+    public void setList(List<String> list) {
+        this.list = list;
+    }
+    
+    public void setMaps(Map<String, String> maps) {
+        this.maps = maps;
+    } 
 }
-public void setCourses(String[] courses) {
-this.courses = courses;
-}
-public void setList(List<String> list) {
-this.list = list;
-}
-public void setMaps(Map<String, String> maps) {
-this.maps = maps;
-} }
 ```
 （2）在 spring 配置文件进行配置
 ```
-<!--1 集合类型属性注入--> <bean id="stu" class="com.atguigu.spring5.collectiontype.Stu">
-<!--数组类型属性注入--> <property name="courses"> <array> <value>java 课程</value> <value>数据库课程</value>
-</array>
-</property>
-<!--list 类型属性注入--> <property name="list"> <list>
-<value>张三</value> <value>小三</value>
-</list>
-</property>
-<!--map 类型属性注入--> <property name="maps"> <map><entry key="JAVA" value="java"></entry> <entry key="PHP" value="php"></entry>
-</map>
-</property>
-<!--set 类型属性注入--> <property name="sets"> <set><value>MySQL</value> <value>Redis</value>
-</set>
-</property>
+<!--1 集合类型属性注入--> 
+<bean id="stu" class="com.atguigu.spring5.collectiontype.Stu">
+<!--数组类型属性注入--> 
+    <property name="courses"> 
+        <array>
+            <value>java 课程</value>
+            <value>数据库课程</value>
+        </array>
+    </property>
+<!--list 类型属性注入-->
+    <property name="list">
+        <list>
+            <value>张三</value>
+            <value>小三</value>
+        </list>
+    </property>
+<!--map 类型属性注入--> 
+    <property name="maps">
+        <map>
+            <entry key="JAVA" value="java"></entry>
+            <entry key="PHP" value="php"></entry>
+        </map>
+    </property>
+<!--set 类型属性注入--> 
+    <property name="sets">
+        <set>
+            <value>MySQL</value>
+            <value>Redis</value>
+        </set>
+    </property>
 </bean>
 ```
 4、在集合里面设置对象类型值
 ```
-<!--创建多个 course 对象--> <bean id="course1" class="com.atguigu.spring5.collectiontype.Course"> <property name="cname" value="Spring5 框架"></property>
-</bean> <bean id="course2" class="com.atguigu.spring5.collectiontype.Course"> <property name="cname" value="MyBatis 框架"></property>
+<!--创建多个 course 对象-->
+<bean id="course1" class="com.atguigu.spring5.collectiontype.Course">     <property name="cname" value="Spring5 框架"></property>
+</bean> 
+<bean id="course2" class="com.atguigu.spring5.collectiontype.Course">     <property name="cname" value="MyBatis 框架"></property>
 </bean>
-<!--注入 list 集合类型，值是对象--> <property name="courseList"> <list><ref bean="course1"></ref> <ref bean="course2"></ref>
-</list>
+<!--注入 list 集合类型，值是对象--> 
+<property name="courseList"> 
+    <list>
+        <ref bean="course1"></ref> 
+        <ref bean="course2"></ref>
+    </list>
 </property> 
 ```
 5、把集合注入部分提取出来
@@ -444,7 +526,7 @@ value="jdbc:mysql://localhost:3306/userDb"></property> <property name="username"
 </bean> 2、引入外部属性文件配置数据库连接池
 （1）创建外部属性文件，properties 格式文件，写数据库信息
 （2）把外部 properties 属性文件引入到 spring 配置文件中
-* 引入 context 名称空间
+ - 引入 context 名称空间
 <beans xmlns="http://www.springframework.org/schema/beans"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns:p="http://www.springframework.org/schema/p"
@@ -468,7 +550,7 @@ IOC 操作 Bean 管理(基于注解方式) 1、什么是注解
 （2）@Service
 （3）@Controller
 （4）@Repository
-* 上面四个注解功能是一样的，都可以用来创建 bean 实例
+ - 上面四个注解功能是一样的，都可以用来创建 bean 实例
 3、基于注解方式实现对象创建
 第一步 引入依赖
 第二步 开启组件扫描
@@ -749,7 +831,7 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
 <!-- JdbcTemplate 对象 --> <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 <!--注入 dataSource--> <property name="dataSource" ref="dataSource"></property>
 </bean> （4）创建 service 类，创建 dao 类，在 dao 注入 jdbcTemplate 对象
-* 配置文件
+ - 配置文件
 <!-- 组件扫描 --> <context:component-scan base-package="com.atguigu"></context:component-scan> ⚫ Service
 @Service
 public class BookService {
@@ -921,8 +1003,8 @@ bookService.batchDelete(batchArgs);
 （1）事务是数据库操作最基本单元，逻辑上一组操作，要么都成功，如果有一个失败所有操
 作都失败
 （2）典型场景：银行转账
-* lucy 转账 100 元 给 mary
-* lucy 少 100，mary 多 100
+ - lucy 转账 100 元 给 mary
+ - lucy 少 100，mary 多 100
 2、事务四个特性（ACID） （1）原子性
 （2）一致性
 （3）隔离性
@@ -970,7 +1052,7 @@ userDao.reduceMoney();
 userDao.addMoney();
 } }4、上面代码，如果正常执行没有问题的，但是如果代码执行过程中出现异常，有问题
 （1）上面问题如何解决呢？
-* 使用事务进行解决
+ - 使用事务进行解决
 （2）事务操作过程
 事务操作（Spring 事务管理介绍）
 1、事务添加到 JavaEE 三层结构里面 Service 层（业务逻辑层）
@@ -1167,8 +1249,8 @@ Spring5 框架新功能（Webflux） 1、SpringWebflux 介绍
 塞的框架，异步非阻塞的框架在 Servlet3.1 以后才支持，核心是基于 Reactor 的相关 API 实现
 的。
 （3）解释什么是异步非阻塞
-* 异步和同步
-* 非阻塞和阻塞
+ - 异步和同步
+ - 非阻塞和阻塞
 ** 上面都是针对对象不一样
 ** 异步和同步针对调用者，调用者发送请求，如果等着对方回应之后才去做其他事情就是同
 步，如果发送请求之后不等着对方回应就去做其他事情就是异步
@@ -1187,7 +1269,7 @@ Spring5 框架新功能（Webflux） 1、SpringWebflux 介绍
 电子表格程序就是响应式编程的一个例子。单元格可以包含字面值或类似"=B1+C1"的公
 式，而包含公式的单元格的值会依据其他单元格的值的变化而变化。
 （2）Java8 及其之前版本
-* 提供的观察者模式两个类 Observer 和 Observable
+ - 提供的观察者模式两个类 Observer 和 Observable
 public class ObserverDemo extends Observable {
 public static void main(String[] args) {
 ObserverDemo observer = new ObserverDemo();
@@ -1224,13 +1306,13 @@ Flux.fromIterable(list);
 Stream<Integer> stream = list.stream();
 Flux.fromStream(stream);
 }（5）三种信号特点
-* 错误信号和完成信号都是终止信号，不能共存的
-* 如果没有发送任何元素值，而是直接发送错误或者完成信号，表示是空数据流
-* 如果没有错误信号，没有完成信号，表示是无限数据流
+ - 错误信号和完成信号都是终止信号，不能共存的
+ - 如果没有发送任何元素值，而是直接发送错误或者完成信号，表示是空数据流
+ - 如果没有错误信号，没有完成信号，表示是无限数据流
 （6）调用 just 或者其他方法只是声明数据流，数据流并没有发出，只有进行订阅之后才会触
 发数据流，不订阅什么都不会发生的
 （7）操作符
-* 对数据流进行一道道操作，成为操作符，比如工厂流水线
+ - 对数据流进行一道道操作，成为操作符，比如工厂流水线
 第一 map 元素映射为新元素
 第二 flatMap 元素映射为流
 ⚫ 把每个元素转换流，把转换之后多个流合并大的流
@@ -1238,15 +1320,15 @@ Flux.fromStream(stream);
 SpringWebflux 基于 Reactor，默认使用容器是 Netty，Netty 是高性能的 NIO 框架，异步非阻
 塞的框架
 （1）Netty
-* BIO 
+ - BIO 
 NIO
 （2）SpringWebflux 执行过程和 SpringMVC 相似的
-* SpringWebflux 核心控制器 DispatchHandler，实现接口 WebHandler
-* 接口 WebHandler 有一个方法
+ - SpringWebflux 核心控制器 DispatchHandler，实现接口 WebHandler
+ - 接口 WebHandler 有一个方法
 （3）SpringWebflux 里面 DispatcherHandler，负责请求的处理
-* HandlerMapping：请求查询到处理的方法
-* HandlerAdapter：真正负责请求处理
-* HandlerResultHandler：响应结果处理
+ - HandlerMapping：请求查询到处理的方法
+ - HandlerAdapter：真正负责请求处理
+ - HandlerResultHandler：响应结果处理
 （4）SpringWebflux 实现函数式编程，两个接口：RouterFunction（路由处理）
 和 HandlerFunction（处理函数）
 5、SpringWebflux（基于注解编程模型）
