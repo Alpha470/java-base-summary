@@ -378,15 +378,26 @@ xmlns:util="http://www.springframework.org/schema/util"
 xsi:schemaLocation="http://www.springframework.org/schema/beans 
 http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/util 
-http://www.springframework.org/schema/util/spring-util.xsd"> （2）使用 util 标签完成 list 集合注入提取
-<!--1 提取 list 集合类型属性注入--> <util:list id="bookList">
-<value>易筋经</value> <value>九阴真经</value> <value>九阳神功</value>
+http://www.springframework.org/schema/util/spring-util.xsd">
+```
+（2）使用 util 标签完成 list 集合注入提取
+```
+<!--1 提取 list 集合类型属性注入-->
+<util:list id="bookList">
+    <value>易筋经</value>
+    <value>九阴真经</value> 
+    <value>九阳神功</value>
 </util:list>
-<!--2 提取 list 集合类型属性注入使用--> <bean id="book" class="com.atguigu.spring5.collectiontype.Book"> <property name="list" ref="bookList"></property>
+<!--2 提取 list 集合类型属性注入使用--> 
+<bean id="book" class="com.atguigu.spring5.collectiontype.Book">
+    <property name="list" ref="bookList"></property>
 </bean>
 ```
-IOC 操作 Bean 管理（FactoryBean） 1、Spring 有两种类型 bean，一种普通 bean，另外一种工厂 bean（FactoryBean） 2、普通 bean：在配置文件中定义 bean 类型就是返回类型
-3、工厂 bean：在配置文件定义 bean 类型可以和返回类型不一样
+## **IOC 操作 Bean 管理（FactoryBean）**
+**1、Spring 有两种类型 bean，一种普通 bean，另外一种工厂 bean（FactoryBean） 
+2、普通 bean：在配置文件中定义 bean 类型就是返回类型
+3、工厂 bean：在配置文件定义 bean 类型可以和返回类型不一样**
+
 第一步 创建类，让这个类作为工厂 bean，实现接口 FactoryBean
 第二步 实现接口里面的方法，在实现的方法中定义返回的 bean 类型
 ```
@@ -394,48 +405,58 @@ public class MyBean implements FactoryBean<Course> {
 //定义返回 bean
 @Override
 public Course getObject() throws Exception {
-Course course = new Course();
-course.setCname("abc");
-return course;
+    Course course = new Course();
+    course.setCname("abc");
+    return course;
 }
 @Override
 public Class<?> getObjectType() {
-return null; }
+    return null;
+}
 @Override
 public boolean isSingleton() {
-return false; } }<bean id="myBean" class="com.atguigu.spring5.factorybean.MyBean">
+return false; 
+    }
+}
+
+<bean id="myBean" class="com.atguigu.spring5.factorybean.MyBean">
 </bean>
+
 @Test
 public void test3() {
-ApplicationContext context =
-new ClassPathXmlApplicationContext("bean3.xml");
-Course course = context.getBean("myBean", Course.class);
-System.out.println(course);
+    ApplicationContext context =
+    new ClassPathXmlApplicationContext("bean3.xml");
+    Course course = context.getBean("myBean", Course.class);
+    System.out.println(course);
 }
 ```
-IOC 操作 Bean 管理（bean 作用域）
-1、在 Spring 里面，设置创建 bean 实例是单实例还是多实例
+## **IOC 操作 Bean 管理（bean 作用域）**
+**1、在 Spring 里面，设置创建 bean 实例是单实例还是多实例
 2、在 Spring 里面，默认情况下，bean 是单实例对象
-3、如何设置单实例还是多实例
+3、如何设置单实例还是多实例**
 （1）在 spring 配置文件 bean 标签里面有属性（scope）用于设置单实例还是多实例
 （2）scope 属性值
-第一个值 默认值，singleton，表示是单实例对象
-第二个值 prototype，表示是多实例对象
+    &emsp;&emsp; 第一个值 默认值，singleton，表示是单实例对象
+    &emsp;&emsp; 第二个值 prototype，表示是多实例对象    
 （3）singleton 和 prototype 区别
-第一 singleton 单实例，prototype 多实例
-第二 设置 scope 值是 singleton 时候，加载 spring 配置文件时候就会创建单实例对象
-设置 scope 值是 prototype 时候，不是在加载 spring 配置文件时候创建 对象，在调用
-getBean 方法时候创建多实例对象
-IOC 操作 Bean 管理（bean 生命周期）
-1、生命周期
+&emsp;&emsp; 第一 singleton 单实例，prototype 多实例
+&emsp;&emsp; 第二 设置 scope 值是 singleton 时候，加载 spring 配置文件时候就会创建单实例对象。设置 scope 值是 prototype 时候，不是在加载 spring 配置文件时候创建 对象，在调用getBean 方法时候创建多实例对象
+## **IOC 操作 Bean 管理（bean 生命周期）**
+
+> **1、生命周期**
+
 （1）从对象创建到对象销毁的过程
-2、bean 生命周期
+
+> **2、bean 生命周期**
+
 （1）通过构造器创建 bean 实例（无参数构造）
 （2）为 bean 的属性设置值和对其他 bean 引用（调用 set 方法）
 （3）调用 bean 的初始化的方法（需要进行配置初始化的方法）
 （4）bean 可以使用了（对象获取到了）
 （5）当容器关闭时候，调用 bean 的销毁的方法（需要进行配置销毁的方法）
-3、演示 bean 生命周期
+
+> **3、演示 bean 生命周期**
+
 ```
 public class Orders {
 //无参数构造
@@ -469,7 +490,9 @@ System.out.println(orders);
 context.close();
 } 
 ```
-4、bean 的后置处理器，bean 生命周期有七步
+
+> **4、bean 的后置处理器，bean 生命周期有七步**
+
 （1）通过构造器创建 bean 实例（无参数构造）
 （2）为 bean 的属性设置值和对其他 bean 引用（调用 set 方法）
 （3）把 bean 实例传递 bean 后置处理器的方法 postProcessBeforeInitialization
@@ -477,7 +500,9 @@ context.close();
 （5）把 bean 实例传递 bean 后置处理器的方法 postProcessAfterInitialization
 （6）bean 可以使用了（对象获取到了）
 （7）当容器关闭时候，调用 bean 的销毁的方法（需要进行配置销毁的方法）
-5、演示添加后置处理器效果
+
+> **5、演示添加后置处理器效果**
+
 （1）创建类，实现接口 BeanPostProcessor，创建后置处理器
 ```
 public class MyBeanPost implements BeanPostProcessor {
@@ -495,35 +520,60 @@ return bean;
 } }
 ```
 ```
-<!--配置后置处理器--> <bean id="myBeanPost" class="com.atguigu.spring5.bean.MyBeanPost"></bean>
+<!--配置后置处理器-->
+<bean id="myBeanPost" class="com.atguigu.spring5.bean.MyBeanPost"></bean>
 ```
-IOC 操作 Bean 管理（xml 自动装配）
-1、什么是自动装配
-（1）根据指定装配规则（属性名称或者属性类型），Spring 自动将匹配的属性值进行注入
-2、演示自动装配过程
-（1）根据属性名称自动注入
+## **IOC 操作 Bean 管理（xml 自动装配）**
+
+> **1、什么是自动装配**
+
+根据指定装配规则（属性名称或者属性类型），Spring 自动将匹配的属性值进行注入
+
+> **2、演示自动装配过程**
+
+**（1）根据属性名称自动注入**
+```
 <!--实现自动装配
 bean 标签属性 autowire，配置自动装配
 autowire 属性常用两个值：
 byName 根据属性名称注入 ，注入值 bean 的 id 值和类属性名称一样
-byType 根据属性类型注入
---><bean id="emp" class="com.atguigu.spring5.autowire.Emp" autowire="byName">
-<!--<property name="dept" ref="dept"></property>-->
-</bean> <bean id="dept" class="com.atguigu.spring5.autowire.Dept"></bean> （2）根据属性类型自动注入
-<!--实现自动装配
-bean 标签属性 autowire，配置自动装配
-autowire 属性常用两个值：
-byName 根据属性名称注入 ，注入值 bean 的 id 值和类属性名称一样
-byType 根据属性类型注入
---><bean id="emp" class="com.atguigu.spring5.autowire.Emp" autowire="byType">
+byType 根据属性类型注入-->
+<bean id="emp" class="com.atguigu.spring5.autowire.Emp" autowire="byName">
 <!--<property name="dept" ref="dept"></property>-->
 </bean> <bean id="dept" class="com.atguigu.spring5.autowire.Dept"></bean>
-IOC 操作 Bean 管理(外部属性文件) 1、直接配置数据库信息
+```
+**（2）根据属性类型自动注入**
+```
+<!--实现自动装配
+bean 标签属性 autowire，配置自动装配
+autowire 属性常用两个值：
+byName 根据属性名称注入 ，注入值 bean 的 id 值和类属性名称一样
+byType 根据属性类型注入
+-->
+<bean id="emp" class="com.atguigu.spring5.autowire.Emp" autowire="byType">
+<!--<property name="dept" ref="dept"></property>-->
+</bean> 
+<bean id="dept" class="com.atguigu.spring5.autowire.Dept"></bean>
+```
+## **IOC 操作 Bean 管理(外部属性文件)**
+
+> **1、直接配置数据库信息**
+
 （1）配置德鲁伊连接池
 （2）引入德鲁伊连接池依赖 jar 包
-<!--直接配置连接池--> <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"> <property name="driverClassName" value="com.mysql.jdbc.Driver"></property> <property name="url" 
-value="jdbc:mysql://localhost:3306/userDb"></property> <property name="username" value="root"></property> <property name="password" value="root"></property>
-</bean> 2、引入外部属性文件配置数据库连接池
+```
+<!--直接配置连接池--> 
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"> 
+    <property name="driverClassName" value="com.mysql.jdbc.Driver"></property> 
+    <property name="url" 
+    value="jdbc:mysql://localhost:3306/userDb"></property>
+    <property name="username" value="root"></property>
+    <property name="password" value="root"></property>
+</bean>
+```
+
+> **2、引入外部属性文件配置数据库连接池**
+
 （1）创建外部属性文件，properties 格式文件，写数据库信息
 （2）把外部 properties 属性文件引入到 spring 配置文件中
  - 引入 context 名称空间
@@ -538,20 +588,33 @@ http://www.springframework.org/schema/util
 http://www.springframework.org/schema/util/spring-util.xsd
 http://www.springframework.org/schema/context 
 http://www.springframework.org/schema/context/spring-context.xsd"> ⚫ 在 spring 配置文件使用标签引入外部属性文件
-<!--引入外部属性文件--> <context:property-placeholder location="classpath:jdbc.properties"/>
-<!--配置连接池--> <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"> <property name="driverClassName" value="${prop.driverClass}"></property> <property name="url" value="${prop.url}"></property> <property name="username" value="${prop.userName}"></property> <property name="password" value="${prop.password}"></property>
+```
+<!--引入外部属性文件--> 
+<context:property-placeholder location="classpath:jdbc.properties"/>
+<!--配置连接池--> <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"> 
+<property name="driverClassName" value="${prop.driverClass}"></property> 
+<property name="url" value="${prop.url}"></property>
+<property name="username" value="${prop.userName}"></property> <property name="password" value="${prop.password}"></property>
 </bean>
-IOC 操作 Bean 管理(基于注解方式) 1、什么是注解
+```
+## **IOC 操作 Bean 管理(基于注解方式)**
+
+> **1、什么是注解**
+
 （1）注解是代码特殊标记，格式：@注解名称(属性名称=属性值, 属性名称=属性值..)
 （2）使用注解，注解作用在类上面，方法上面，属性上面
 （3）使用注解目的：简化 xml 配置
-2、Spring 针对 Bean 管理中创建对象提供注解
+
+> **2、Spring 针对 Bean 管理中创建对象提供注解**
+
 （1）@Component
 （2）@Service
 （3）@Controller
 （4）@Repository
  - 上面四个注解功能是一样的，都可以用来创建 bean 实例
-3、基于注解方式实现对象创建
+
+> **3、基于注解方式实现对象创建**
+
 第一步 引入依赖
 第二步 开启组件扫描
 <!--开启组件扫描
@@ -566,7 +629,10 @@ IOC 操作 Bean 管理(基于注解方式) 1、什么是注解
 public class UserService {
 public void add() {
 System.out.println("service add.......");
-} }4、开启组件扫描细节配置
+} }
+
+> **4、开启组件扫描细节配置**
+
 <!--示例 1
 use-default-filters="false" 表示现在不使用默认 filter，自己配置 filter
 context:include-filter ，设置扫描哪些内容
@@ -578,7 +644,10 @@ expression="org.springframework.stereotype.Controller"/>
 context:exclude-filter： 设置哪些内容不进行扫描
 --><context:component-scan base-package="com.atguigu"> <context:exclude-filter type="annotation"
 expression="org.springframework.stereotype.Controller"/>
-</context:component-scan> 5、基于注解方式实现属性注入
+</context:component-scan>
+
+> **5、基于注解方式实现属性注入**
+
 （1）@Autowired：根据属性类型进行自动装配
 第一步 把 service 和 dao 对象创建，在 service 和 dao 类添加创建对象注解
 第二步 在 service 注入 dao 对象，在 service 类添加 dao 类型属性，在属性上面使用注解
@@ -620,14 +689,16 @@ UserService.class);
 System.out.println(userService);
 userService.add();
 }
-AOP（概念）
-1、什么是 AOP
+## **AOP（概念）**
+
+> **1、什么是 AOP**
+
 （1）面向切面编程（方面），利用 AOP 可以对业务逻辑的各个部分进行隔离，从而使得
 业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
 （2）通俗描述：不通过修改源代码方式，在主干功能里面添加新功能
 （3）使用登录例子说明 AOP
 AOP（底层原理）
-1、AOP 底层使用动态代理
+**1、AOP 底层使用动态代理**
 （1）有两种情况动态代理
 第一种 有接口情况，使用 JDK 动态代理
 ⚫ 创建接口实现类代理对象，增强类的方法
@@ -640,7 +711,7 @@ AOP（JDK 动态代理）
 第一参数，类加载器
 第二参数，增强方法所在的类，这个类实现的接口，支持多个接口
 第三参数，实现这个接口 InvocationHandler，创建代理对象，写增强的部分
-2、编写 JDK 动态代理代码
+**2、编写 JDK 动态代理代码**
 （1）创建接口，定义方法
 public interface UserDao {
 public int add(int a,int b);
@@ -654,7 +725,8 @@ return a+b;
 @Override
 public String update(String id) {
 return id;
-} }（3）使用 Proxy 类创建接口代理对象
+} }
+（3）使用 Proxy 类创建接口代理对象
 public class JDKProxy {
 public static void main(String[] args) {
 //创建接口实现类代理对象
@@ -695,11 +767,11 @@ Object res = method.invoke(obj, args);
 System.out.println("方法之后执行...."+obj);
 return res;
 } }
-AOP（术语）
+**AOP（术语）
 1、连接点
 2、切入点
 3、通知（增强）
-4、切面
+4、切面**
 AOP 操作（准备工作） 1、Spring 框架一般都是基于 AspectJ 实现 AOP 操作
 （1）AspectJ 不是 Spring 组成部分，独立 AOP 框架，一般把 AspectJ 和 Spirng 框架一起使
 用，进行 AOP 操作
