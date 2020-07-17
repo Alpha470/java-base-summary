@@ -45,7 +45,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.springframework.org/schema/beans 
 http://www.springframework.org/schema/beans/spring-beans.xsd">
 <!--配置 User 对象创建--> 
-<bean id="user" class="com.atguigu.spring5.User"></bean>
+<bean id="user" class="com.alpha.spring5.User"></bean>
 ```
  （6）进行测试代码编写
 ```
@@ -169,7 +169,7 @@ public Orders(String oname,String address) {
 第二步 进行属性注入，在 bean 标签里面进行操作
 ```
 <!--2 set 方法注入属性-->
-<bean id="book" class="com.atguigu.spring5.Book" p:bname="九阳神功"  p:bauthor="无名氏"></bean>
+<bean id="book" class="com.alpha.spring5.Book" p:bname="九阳神功"  p:bauthor="无名氏"></bean>
 ```
 ## **IOC 操作 Bean 管理（xml 注入其他类型属性）**
 **1、字面量**
@@ -577,6 +577,8 @@ byType 根据属性类型注入
 （1）创建外部属性文件，properties 格式文件，写数据库信息
 （2）把外部 properties 属性文件引入到 spring 配置文件中
  - 引入 context 名称空间
+ 
+```
 <beans xmlns="http://www.springframework.org/schema/beans"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns:p="http://www.springframework.org/schema/p"
@@ -587,14 +589,18 @@ http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/util 
 http://www.springframework.org/schema/util/spring-util.xsd
 http://www.springframework.org/schema/context 
-http://www.springframework.org/schema/context/spring-context.xsd"> ⚫ 在 spring 配置文件使用标签引入外部属性文件
+http://www.springframework.org/schema/context/spring-context.xsd"> 
+```
+
+**在 spring 配置文件使用标签引入外部属性文件**
 ```
 <!--引入外部属性文件--> 
 <context:property-placeholder location="classpath:jdbc.properties"/>
-<!--配置连接池--> <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"> 
-<property name="driverClassName" value="${prop.driverClass}"></property> 
-<property name="url" value="${prop.url}"></property>
-<property name="username" value="${prop.userName}"></property> <property name="password" value="${prop.password}"></property>
+<!--配置连接池--> 
+<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+    <property name="driverClassName" value="${prop.driverClass}"></property> 
+    <property name="url" value="${prop.url}"></property>
+    <property name="username" value="${prop.userName}"></property> <property name="password" value="${prop.password}"></property>
 </bean>
 ```
 ## **IOC 操作 Bean 管理(基于注解方式)**
@@ -617,11 +623,15 @@ http://www.springframework.org/schema/context/spring-context.xsd"> ⚫ 在 sprin
 
 第一步 引入依赖
 第二步 开启组件扫描
+```
 <!--开启组件扫描
 1 如果扫描多个包，多个包使用逗号隔开
 2 扫描包上层目录
---><context:component-scan base-package="com.atguigu"></context:component-scan>
+-->
+<context:component-scan base-package="com.atguigu"></context:component-scan>
+```
 第三步 创建类，在类上面添加创建对象注解
+```
 //在注解里面 value 属性值可以省略不写，
 //默认值是类名称，首字母小写
 //UserService -- userService
@@ -630,9 +640,9 @@ public class UserService {
 public void add() {
 System.out.println("service add.......");
 } }
-
+```
 > **4、开启组件扫描细节配置**
-
+```
 <!--示例 1
 use-default-filters="false" 表示现在不使用默认 filter，自己配置 filter
 context:include-filter ，设置扫描哪些内容
@@ -645,12 +655,13 @@ context:exclude-filter： 设置哪些内容不进行扫描
 --><context:component-scan base-package="com.atguigu"> <context:exclude-filter type="annotation"
 expression="org.springframework.stereotype.Controller"/>
 </context:component-scan>
-
+```
 > **5、基于注解方式实现属性注入**
 
 （1）@Autowired：根据属性类型进行自动装配
 第一步 把 service 和 dao 对象创建，在 service 和 dao 类添加创建对象注解
 第二步 在 service 注入 dao 对象，在 service 类添加 dao 类型属性，在属性上面使用注解
+```
 @Service
 public class UserService {
 //定义 dao 类型属性
@@ -659,36 +670,55 @@ public class UserService {
 @Autowired
 private UserDao userDao;
 public void add() {
-System.out.println("service add.......");
-userDao.add();
-} }（2）@Qualifier：根据名称进行注入
+    System.out.println("service add.......");
+    userDao.add();
+    } 
+}
+```
+（2）@Qualifier：根据名称进行注入
 这个@Qualifier 注解的使用，和上面@Autowired 一起使用
+```
 //定义 dao 类型属性
 //不需要添加 set 方法
 //添加注入属性注解
 @Autowired //根据类型进行注入
 @Qualifier(value = "userDaoImpl1") //根据名称进行注入
-private UserDao userDao; （3）@Resource：可以根据类型注入，可以根据名称注入
+private UserDao userDao;
+```
+（3）@Resource：可以根据类型注入，可以根据名称注入
+```
 //@Resource //根据类型进行注入
 @Resource(name = "userDaoImpl1") //根据名称进行注入
-private UserDao userDao; （4）@Value：注入普通类型属性
+private UserDao userDao; 
+```
+（4）@Value：注入普通类型属性
+```
 @Value(value = "abc")
-private String name; 6、完全注解开发
+private String name; 
+```
+
+> **6、完全注解开发**
+
 （1）创建配置类，替代 xml 配置文件
+```
 @Configuration //作为配置类，替代 xml 配置文件
 @ComponentScan(basePackages = {"com.atguigu"})
 public class SpringConfig {
-}（2）编写测试类
+}
+```
+（2）编写测试类
+```
 @Test
 public void testService2() {
 //加载配置类
-ApplicationContext context
-= new AnnotationConfigApplicationContext(SpringConfig.class);
-UserService userService = context.getBean("userService", 
-UserService.class);
-System.out.println(userService);
-userService.add();
+    ApplicationContext context
+    = new AnnotationConfigApplicationContext(SpringConfig.class);
+    UserService userService = context.getBean("userService", 
+    UserService.class);
+    System.out.println(userService);
+    userService.add();
 }
+```
 ## **AOP（概念）**
 
 > **1、什么是 AOP**
@@ -697,14 +727,19 @@ userService.add();
 业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
 （2）通俗描述：不通过修改源代码方式，在主干功能里面添加新功能
 （3）使用登录例子说明 AOP
-AOP（底层原理）
+### **AOP（底层原理）**
 **1、AOP 底层使用动态代理**
-（1）有两种情况动态代理
+
+> **（1）有两种情况动态代理**
+
 第一种 有接口情况，使用 JDK 动态代理
-⚫ 创建接口实现类代理对象，增强类的方法
+
+ - 创建接口实现类代理对象，增强类的方法
+
 第二种 没有接口情况，使用 CGLIB 动态代理
-⚫ 创建子类的代理对象，增强类的方法
-AOP（JDK 动态代理）
+
+ -  创建子类的代理对象，增强类的方法
+## **AOP（JDK 动态代理）**
 1、使用 JDK 动态代理，使用 Proxy 类里面的方法创建代理对象
 （1）调用 newProxyInstance 方法
 方法有三个参数：
