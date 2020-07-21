@@ -42,7 +42,7 @@
 （3）打开 idea 工具，创建普通 Java 工程，导入 Spring 相关 jar 包
 （4） 创建普通类，在这个类创建普通方法
 
-```
+```java
 public class User {
     public void add() {
         System.out.println("add......");
@@ -52,7 +52,7 @@ public class User {
 
 （5）创建 Spring 配置文件，在配置文件配置创建的对象（Spring 配置文件使用 xml 格式）
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -64,7 +64,7 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
 
  （6）进行测试代码编写
 
-```
+```java
 @Test
 public void testAdd() {
 //1 加载 spring 配置文件
@@ -127,7 +127,7 @@ DI：依赖注入，就是注入属性
 
 （1）创建类，定义属性和对应的 set 方法
 
-```
+```java
 /**
  - 演示使用 set 方法进行注入属性
 */
@@ -147,18 +147,20 @@ public void setBauthor(String bauthor) {
 
 （2）在 spring 配置文件配置对象创建，配置属性注入
 
-    <!--2 set 方法注入属性-->
-    <bean id="book" class="com.atguigu.spring5.Book">
-    <!--使用 property 完成属性注入name：类里面属性名称value：向属性注入的值-->
-        <property name="bname" value="易筋经"></property> 
-        <property name="bauthor" value="达摩老祖"></property>
-    </bean>
+```xml
+<!--2 set 方法注入属性-->
+<bean id="book" class="com.alpha.spring5.Book">
+<!--使用 property 完成属性注入name：类里面属性名称value：向属性注入的值-->
+    <property name="bname" value="易筋经"></property> 
+    <property name="bauthor" value="达摩老祖"></property>
+</bean>
+```
 
 >  **4、第二种注入方式：使用有参数构造进行注入**
 
 （1）创建类，定义属性，创建属性对应有参数构造方法
 
-```
+```java
 /**
  - 使用有参数构造注入
 */
@@ -176,9 +178,9 @@ public Orders(String oname,String address) {
 
 （2）在 spring 配置文件中进行配置
 
-```
+```xml
 <!--3 有参数构造注入属性--> 
-<bean id="orders" class="com.atguigu.spring5.Orders">  
+<bean id="orders" class="com.alpha.spring5.Orders">  
     <constructor-arg name="oname" value="电脑"></constructor-arg>
     <constructor-arg name="address" value="China"></constructor-arg>
 </bean> 
@@ -192,7 +194,7 @@ public Orders(String oname,String address) {
 第一步 添加 p 名称空间在配置文件中
 第二步 进行属性注入，在 bean 标签里面进行操作
 
-```
+```xml
 <!--2 set 方法注入属性-->
 <bean id="book" class="com.alpha.spring5.Book" p:bname="九阳神功"  p:bauthor="无名氏"></bean>
 ```
@@ -202,23 +204,27 @@ public Orders(String oname,String address) {
 **1、字面量**
 （1）null 值
 
-    <!--null 值--> 
-    <property name="address"> <null/></property> 
+```xml
+<!--null 值--> 
+<property name="address"> <null/></property> 
+```
 
 （2）属性值包含特殊符号
 
-    <!--属性值包含特殊符号
-    1 把<>进行转义   `&lt; &gt;`
-    2 把带特殊符号内容写到 CDATA
-    -->
-    <property name="address"> <value><![CDATA[<<南京>>]]></value></property>
+```xml
+<!--属性值包含特殊符号
+1 把<>进行转义   `&lt; &gt;`
+2 把带特殊符号内容写到 CDATA
+-->
+<property name="address"> <value><![CDATA[<<南京>>]]></value></property>
+```
 
 **2、注入属性-外部 bean**
 （1）创建两个类 service 类和 dao 类 
 （2）在 service 调用 dao 里面的方法
 （3）在 spring 配置文件中进行配置
 
-```
+```java
 public class UserService {
     //创建 UserDao 类型属性，生成 set 方法
     private UserDao userDao;
@@ -232,11 +238,11 @@ public void add() {
 }
 
 <!--1 service 和 dao 对象创建--> 
-<bean id="userService" class="com.atguigu.spring5.service.UserService">
+<bean id="userService" class="com.alpha.spring5.service.UserService">
 <!--注入 userDao 对象。name 属性：类里面属性名称；ref 属性：创建userDao 对象 bean 标签 id 值-->
     <property name="userDao" ref="userDaoImpl"></property>
 </bean> 
-<bean id="userDaoImpl"  class="com.atguigu.spring5.dao.UserDaoImpl"></bean>
+<bean id="userDaoImpl"  class="com.alpha.spring5.dao.UserDaoImpl"></bean>
 ```
 
 **3、注入属性-内部 bean**
@@ -272,15 +278,15 @@ public void setGender(String gender) {
 
 （3）在 spring 配置文件中进行配置
 
-```
+```java
 <!--内部 bean-->
-<bean id="emp" class="com.atguigu.spring5.bean.Emp">
+<bean id="emp" class="com.alpha.spring5.bean.Emp">
     <!--设置两个普通属性--> 
     5property name="ename" value="lucy"></property>
     <property name="gender" value="女"></property>
     <!--设置对象类型属性--> 
     <property name="dept">
-        <bean id="dept" class="com.atguigu.spring5.bean.Dept">
+        <bean id="dept" class="com.alpha.spring5.bean.Dept">
             <property name="dname" value="安保部"></property>
         </bean>
     </property>
@@ -290,25 +296,25 @@ public void setGender(String gender) {
 4、注入属性-级联赋值
 （1）第一种写法
 
-```
+```xml
 <!--级联赋值-->
-<bean id="emp" class="com.atguigu.spring5.bean.Emp">
+<bean id="emp" class="com.alpha.spring5.bean.Emp">
     <!--设置两个普通属性-->
     <property name="ename" value="lucy"></property> 
     <property name="gender" value="女"></property>
     <!--级联赋值--> 
     <property name="dept" ref="dept"></property>
 </bean> 
-<bean id="dept" class="com.atguigu.spring5.bean.Dept"> 
+<bean id="dept" class="com.alpha.spring5.bean.Dept"> 
     <property name="dname" value="财务部"></property>
 </bean>
 ```
 
 （2）第二种写法
 
-```
+```xml
 <!--级联赋值--> 
-<bean id="emp" class="com.atguigu.spring5.bean.Emp">
+<bean id="emp" class="com.alpha.spring5.bean.Emp">
     <!--设置两个普通属性--> 
     <property name="ename" value="lucy"></property>
     <property name="gender" value="女"></property>
@@ -316,18 +322,18 @@ public void setGender(String gender) {
     <property name="dept" ref="dept"></property>
     <property name="dept.dname" value="技术部"></property>
 </bean>
-<bean id="dept" class="com.atguigu.spring5.bean.Dept"> 
+<bean id="dept" class="com.alpha.spring5.bean.Dept"> 
     <property name="dname" value="财务部"></property>
 </bean>
 ```
 
-##**IOC 操作 Bean 管理（xml 注入集合属性）**
+##**IOC 操作 Bean 管理（xml 注入集合属性）**xml
 1、注入数组类型属性
 2、注入 List 集合类型属性
 3、注入 Map 集合类型属性
 （1）创建类，定义数组、list、map、set 类型属性，生成对应 set 方法
 
-```
+```java
 public class Stu {
     //1 数组类型属性
     private String[] courses;
@@ -358,9 +364,9 @@ public class Stu {
 
 （2）在 spring 配置文件进行配置
 
-```
+```xml
 <!--1 集合类型属性注入--> 
-<bean id="stu" class="com.atguigu.spring5.collectiontype.Stu">
+<bean id="stu" class="com.alpha.spring5.collectiontype.Stu">
 <!--数组类型属性注入--> 
     <property name="courses"> 
         <array>
@@ -394,11 +400,11 @@ public class Stu {
 
 4、在集合里面设置对象类型值
 
-```
+```xml
 <!--创建多个 course 对象-->
-<bean id="course1" class="com.atguigu.spring5.collectiontype.Course">     <property name="cname" value="Spring5 框架"></property>
+<bean id="course1" class="com.alpha.spring5.collectiontype.Course">     <property name="cname" value="Spring5 框架"></property>
 </bean> 
-<bean id="course2" class="com.atguigu.spring5.collectiontype.Course">     <property name="cname" value="MyBatis 框架"></property>
+<bean id="course2" class="com.alpha.spring5.collectiontype.Course">     <property name="cname" value="MyBatis 框架"></property>
 </bean>
 <!--注入 list 集合类型，值是对象--> 
 <property name="courseList"> 
@@ -412,7 +418,7 @@ public class Stu {
 5、把集合注入部分提取出来
 （1）在 spring 配置文件中引入名称空间 util
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -426,7 +432,7 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 
 （2）使用 util 标签完成 list 集合注入提取
 
-```
+```xml
 <!--1 提取 list 集合类型属性注入-->
 <util:list id="bookList">
     <value>易筋经</value>
@@ -434,7 +440,7 @@ http://www.springframework.org/schema/util/spring-util.xsd">
     <value>九阳神功</value>
 </util:list>
 <!--2 提取 list 集合类型属性注入使用--> 
-<bean id="book" class="com.atguigu.spring5.collectiontype.Book">
+<bean id="book" class="com.alpha.spring5.collectiontype.Book">
     <property name="list" ref="bookList"></property>
 </bean>
 ```
@@ -448,7 +454,7 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 第一步 创建类，让这个类作为工厂 bean，实现接口 FactoryBean
 第二步 实现接口里面的方法，在实现的方法中定义返回的 bean 类型
 
-```
+```java
 public class MyBean implements FactoryBean<Course> {
 //定义返回 bean
 @Override
@@ -467,7 +473,7 @@ return false;
     }
 }
 
-<bean id="myBean" class="com.atguigu.spring5.factorybean.MyBean">
+<bean id="myBean" class="com.alpha.spring5.factorybean.MyBean">
 </bean>
 
 @Test
@@ -508,7 +514,7 @@ public void test3() {
 
 > **3、演示 bean 生命周期**
 
-```
+```java
 public class Orders {
 //无参数构造
 public Orders() {
@@ -526,7 +532,7 @@ System.out.println("第三步 执行初始化的方法");
 //创建执行的销毁的方法
 public void destroyMethod() {
 System.out.println("第五步 执行销毁的方法");
-} }<bean id="orders" class="com.atguigu.spring5.bean.Orders" init￾method="initMethod" destroy-method="destroyMethod"> <property name="oname" value="手机"></property>
+} }<bean id="orders" class="com.alpha.spring5.bean.Orders" init￾method="initMethod" destroy-method="destroyMethod"> <property name="oname" value="手机"></property>
 </bean>
 @Test
 public void testBean3() {
@@ -556,7 +562,7 @@ context.close();
 
 （1）创建类，实现接口 BeanPostProcessor，创建后置处理器
 
-```
+```java
 public class MyBeanPost implements BeanPostProcessor {
 @Override
 public Object postProcessBeforeInitialization(Object bean, String beanName) 
@@ -574,7 +580,7 @@ return bean;
 
 ```
 <!--配置后置处理器-->
-<bean id="myBeanPost" class="com.atguigu.spring5.bean.MyBeanPost"></bean>
+<bean id="myBeanPost" class="com.alpha.spring5.bean.MyBeanPost"></bean>
 ```
 
 ## **IOC 操作 Bean 管理（xml 自动装配）**
@@ -587,30 +593,30 @@ return bean;
 
 **（1）根据属性名称自动注入**
 
-```
+```xml
 <!--实现自动装配
 bean 标签属性 autowire，配置自动装配
 autowire 属性常用两个值：
 byName 根据属性名称注入 ，注入值 bean 的 id 值和类属性名称一样
 byType 根据属性类型注入-->
-<bean id="emp" class="com.atguigu.spring5.autowire.Emp" autowire="byName">
+<bean id="emp" class="com.alpha.spring5.autowire.Emp" autowire="byName">
 <!--<property name="dept" ref="dept"></property>-->
-</bean> <bean id="dept" class="com.atguigu.spring5.autowire.Dept"></bean>
+</bean> <bean id="dept" class="com.alpha.spring5.autowire.Dept"></bean>
 ```
 
 **（2）根据属性类型自动注入**
 
-```
+```xml
 <!--实现自动装配
 bean 标签属性 autowire，配置自动装配
 autowire 属性常用两个值：
 byName 根据属性名称注入 ，注入值 bean 的 id 值和类属性名称一样
 byType 根据属性类型注入
 -->
-<bean id="emp" class="com.atguigu.spring5.autowire.Emp" autowire="byType">
+<bean id="emp" class="com.alpha.spring5.autowire.Emp" autowire="byType">
 <!--<property name="dept" ref="dept"></property>-->
 </bean> 
-<bean id="dept" class="com.atguigu.spring5.autowire.Dept"></bean>
+<bean id="dept" class="com.alpha.spring5.autowire.Dept"></bean>
 ```
 
 ## **IOC 操作 Bean 管理(外部属性文件)**
@@ -620,7 +626,7 @@ byType 根据属性类型注入
 （1）配置德鲁伊连接池
 （2）引入德鲁伊连接池依赖 jar 包
 
-```
+```xml
 <!--直接配置连接池--> 
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"> 
     <property name="driverClassName" value="com.mysql.jdbc.Driver"></property> 
@@ -638,7 +644,7 @@ byType 根据属性类型注入
 
  - 引入 context 名称空间
 
-```
+```xml
 <beans xmlns="http://www.springframework.org/schema/beans"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns:p="http://www.springframework.org/schema/p"
@@ -654,7 +660,7 @@ http://www.springframework.org/schema/context/spring-context.xsd">
 
 **在 spring 配置文件使用标签引入外部属性文件**
 
-```
+```xml
 <!--引入外部属性文件--> 
 <context:property-placeholder location="classpath:jdbc.properties"/>
 <!--配置连接池--> 
@@ -692,12 +698,12 @@ http://www.springframework.org/schema/context/spring-context.xsd">
 1 如果扫描多个包，多个包使用逗号隔开
 2 扫描包上层目录
 -->
-<context:component-scan base-package="com.atguigu"></context:component-scan>
+<context:component-scan base-package="com.alpha"></context:component-scan>
 ```
 
 第三步 创建类，在类上面添加创建对象注解
 
-```
+```java
 //在注解里面 value 属性值可以省略不写，
 //默认值是类名称，首字母小写
 //UserService -- userService
@@ -710,17 +716,17 @@ System.out.println("service add.......");
 
 > **4、开启组件扫描细节配置**
 
-```
+```xml
 <!--示例 1
 use-default-filters="false" 表示现在不使用默认 filter，自己配置 filter
 context:include-filter ，设置扫描哪些内容
---><context:component-scan base-package="com.atguigu" use-default￾filters="false"> <context:include-filter type="annotation"
+--><context:component-scan base-package="com.alpha" use-default￾filters="false"> <context:include-filter type="annotation"
 expression="org.springframework.stereotype.Controller"/>
 </context:component-scan>
 <!--示例 2
 下面配置扫描包所有内容
 context:exclude-filter： 设置哪些内容不进行扫描
---><context:component-scan base-package="com.atguigu"> <context:exclude-filter type="annotation"
+--><context:component-scan base-package="com.alpha"> <context:exclude-filter type="annotation"
 expression="org.springframework.stereotype.Controller"/>
 </context:component-scan>
 ```
@@ -731,7 +737,7 @@ expression="org.springframework.stereotype.Controller"/>
 第一步 把 service 和 dao 对象创建，在 service 和 dao 类添加创建对象注解
 第二步 在 service 注入 dao 对象，在 service 类添加 dao 类型属性，在属性上面使用注解
 
-```
+```java
 @Service
 public class UserService {
 //定义 dao 类型属性
@@ -749,7 +755,7 @@ public void add() {
 （2）@Qualifier：根据名称进行注入
 这个@Qualifier 注解的使用，和上面@Autowired 一起使用
 
-```
+```java
 //定义 dao 类型属性
 //不需要添加 set 方法
 //添加注入属性注解
@@ -760,7 +766,7 @@ private UserDao userDao;
 
 （3）@Resource：可以根据类型注入，可以根据名称注入
 
-```
+```java
 //@Resource //根据类型进行注入
 @Resource(name = "userDaoImpl1") //根据名称进行注入
 private UserDao userDao; 
@@ -768,7 +774,7 @@ private UserDao userDao;
 
 （4）@Value：注入普通类型属性
 
-```
+```java
 @Value(value = "abc")
 private String name; 
 ```
@@ -777,16 +783,16 @@ private String name;
 
 （1）创建配置类，替代 xml 配置文件
 
-```
+```java
 @Configuration //作为配置类，替代 xml 配置文件
-@ComponentScan(basePackages = {"com.atguigu"})
+@ComponentScan(basePackages = {"com.alpha"})
 public class SpringConfig {
 }
 ```
 
 （2）编写测试类
 
-```
+```java
 @Test
 public void testService2() {
 //加载配置类
@@ -969,7 +975,7 @@ http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/aop 
 http://www.springframework.org/schema/aop/spring-aop.xsd">
   <!-- 开启注解扫描 --> 
-  <context:component-scan base￾package="com.atguigu.spring5.aopanno">
+  <context:component-scan base￾package="com.alpha.spring5.aopanno">
   </context:component-scan> 
 ```
 
@@ -990,29 +996,29 @@ public class UserProxy {
 public class UserProxy {
 //前置通知
 //@Before 注解表示作为前置通知
-@Before(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
+@Before(value = "execution(* com.alpha.spring5.aopanno.User.add(..))")
 public void before() {
 	System.out.println("before.........");
 }
 //后置通知（返回通知）
 @AfterReturning(value = "execution(* 
-com.atguigu.spring5.aopanno.User.add(..))")
+com.alpha.spring5.aopanno.User.add(..))")
   public void afterReturning() {
   System.out.println("afterReturning.........");
 }
 //最终通知
-@After(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
+@After(value = "execution(* com.alpha.spring5.aopanno.User.add(..))")
 public void after() {
 	System.out.println("after.........");
 }
 //异常通知
 @AfterThrowing(value = "execution(* 
-com.atguigu.spring5.aopanno.User.add(..))")
+com.alpha.spring5.aopanno.User.add(..))")
 public void afterThrowing() {
 System.out.println("afterThrowing.........");
 }
 //环绕通知
-@Around(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
+@Around(value = "execution(* com.alpha.spring5.aopanno.User.add(..))")
 public void around(ProceedingJoinPoint proceedingJoinPoint) throws 
 Throwable {
 System.out.println("环绕之前.........");
@@ -1022,7 +1028,7 @@ proceedingJoinPoint.proceed();
   }
 }5、相同的切入点抽取
 //相同切入点抽取
-@Pointcut(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
+@Pointcut(value = "execution(* com.alpha.spring5.aopanno.User.add(..))")
 	public void pointdemo() {
 }
 //前置通知
@@ -1050,7 +1056,7 @@ public class PersonProxy
 
 ```java
 @Configuration
-@ComponentScan(basePackages = {"com.atguigu"})
+@ComponentScan(basePackages = {"com.alpha"})
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class ConfigAop {
   
@@ -1065,7 +1071,7 @@ AOP 操作（AspectJ 配置文件）
 
 ```xml
 <!--创建对象--> 
-<bean id="book" class="com.atguigu.spring5.aopxml.Book"></bean> <bean id="bookProxy" class="com.atguigu.spring5.aopxml.BookProxy"></bean> 
+<bean id="book" class="com.alpha.spring5.aopxml.Book"></bean> <bean id="bookProxy" class="com.alpha.spring5.aopxml.BookProxy"></bean> 
 ```
 
 3、在 spring 配置文件中配置切入点
@@ -1073,7 +1079,7 @@ AOP 操作（AspectJ 配置文件）
 ```xml
 <!--配置 aop 增强--> <aop:config>
 <!--切入点--> <aop:pointcut id="p" expression="execution(* 
-com.atguigu.spring5.aopxml.Book.buy(..))"/>
+com.alpha.spring5.aopxml.Book.buy(..))"/>
 <!--配置切面--> 
   <aop:aspect ref="bookProxy">
 <!--增强作用在具体的方法上--> 
@@ -1122,7 +1128,7 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
 
  - ```xml
    <!-- 组件扫描 --> 
-   <context:component-scan base-package="com.atguigu"></context:component-scan> 
+   <context:component-scan base-package="com.alpha"></context:component-scan> 
    
    ```
 
