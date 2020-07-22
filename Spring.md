@@ -6,10 +6,10 @@
 
 ### **2、IOC 容器**
 
-    （1）IOC 底层原理
-    （2）IOC 接口（BeanFactory）
-    （3）IOC 操作 Bean 管理（基于 xml）
-    （4）IOC 操作 Bean 管理（基于注解）
+（1）IOC 底层原理
+（2）IOC 接口（BeanFactory）
+（3）IOC 操作 Bean 管理（基于 xml）
+（4）IOC 操作 Bean 管理（基于注解）
 
 ### **3、Aop**
 
@@ -18,6 +18,8 @@
 ### **5、事务管理**
 
 ### **6、Spring5 新特性**
+
+
 
 # Spring框架概述
 
@@ -192,6 +194,7 @@ public Orders(String oname,String address) {
 
 （1）使用 p 名称空间注入，可以简化基于 xml 配置方式
 第一步 添加 p 名称空间在配置文件中
+
 第二步 进行属性注入，在 bean 标签里面进行操作
 
 ```xml
@@ -230,11 +233,11 @@ public class UserService {
     private UserDao userDao;
     public void setUserDao(UserDao userDao) {
     this.userDao = userDao;
-}
+	}
 public void add() {
     System.out.println("service add...............");
     userDao.update();
-    } 
+   } 
 }
 
 <!--1 service 和 dao 对象创建--> 
@@ -250,7 +253,7 @@ public void add() {
     一个部门有多个员工，一个员工属于一个部门。部门是一，员工是多
 （2）在实体类之间表示一对多关系，员工表示所属部门，使用对象类型属性进行表示
 
-```
+```java
 //部门类
 public class Dept {
 private String dname;
@@ -278,7 +281,7 @@ public void setGender(String gender) {
 
 （3）在 spring 配置文件中进行配置
 
-```java
+```xml
 <!--内部 bean-->
 <bean id="emp" class="com.alpha.spring5.bean.Emp">
     <!--设置两个普通属性--> 
@@ -518,33 +521,37 @@ public void test3() {
 public class Orders {
 //无参数构造
 public Orders() {
-System.out.println("第一步 执行无参数构造创建 bean 实例");
+	System.out.println("第一步 执行无参数构造创建 bean 实例");
 }
 private String oname;
 public void setOname(String oname) {
-this.oname = oname;
-System.out.println("第二步 调用 set 方法设置属性值");
+  this.oname = oname;
+  System.out.println("第二步 调用 set 方法设置属性值");
 }
 //创建执行的初始化的方法
 public void initMethod() {
-System.out.println("第三步 执行初始化的方法");
+	System.out.println("第三步 执行初始化的方法");
 }
 //创建执行的销毁的方法
 public void destroyMethod() {
-System.out.println("第五步 执行销毁的方法");
-} }<bean id="orders" class="com.alpha.spring5.bean.Orders" init￾method="initMethod" destroy-method="destroyMethod"> <property name="oname" value="手机"></property>
+  	System.out.println("第五步 执行销毁的方法");
+  } 
+}
+	
+<bean id="orders" class="com.alpha.spring5.bean.Orders" init￾method="initMethod" destroy-method="destroyMethod"> <property name="oname" value="手机"></property>
 </bean>
+  
 @Test
 public void testBean3() {
-// ApplicationContext context =
-// new ClassPathXmlApplicationContext("bean4.xml");
-ClassPathXmlApplicationContext context =
-new ClassPathXmlApplicationContext("bean4.xml");
-Orders orders = context.getBean("orders", Orders.class);
-System.out.println("第四步 获取创建 bean 实例对象");
-System.out.println(orders);
-//手动让 bean 实例销毁
-context.close();
+  // ApplicationContext context =
+  // new ClassPathXmlApplicationContext("bean4.xml");
+  ClassPathXmlApplicationContext context =
+  new ClassPathXmlApplicationContext("bean4.xml");
+  Orders orders = context.getBean("orders", Orders.class);
+  System.out.println("第四步 获取创建 bean 实例对象");
+  System.out.println(orders);
+  //手动让 bean 实例销毁
+  context.close();
 } 
 ```
 
@@ -565,20 +572,20 @@ context.close();
 ```java
 public class MyBeanPost implements BeanPostProcessor {
 @Override
-public Object postProcessBeforeInitialization(Object bean, String beanName) 
-throws BeansException {
-System.out.println("在初始化之前执行的方法");
-return bean;
+public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+  System.out.println("在初始化之前执行的方法");
+  return bean;
 }
 @Override
 public Object postProcessAfterInitialization(Object bean, String beanName) 
 throws BeansException {
-System.out.println("在初始化之后执行的方法");
-return bean;
-} }
+    System.out.println("在初始化之后执行的方法");
+    return bean;
+  }
+}
 ```
 
-```
+```xml
 <!--配置后置处理器-->
 <bean id="myBeanPost" class="com.alpha.spring5.bean.MyBeanPost"></bean>
 ```
@@ -943,10 +950,6 @@ public class User {
 }
 ```
 
-
-
-
-
 2、创建增强类（编写增强逻辑）
 （1）在增强类里面，创建方法，让不同方法代表不同通知类型
 
@@ -1289,7 +1292,6 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    
 
 
-   
    JdbcTemplate 操作数据库（批量操作）
    1、批量操作：操作表里面多条记录
    2、JdbcTemplate 实现批量添加操作
@@ -1423,6 +1425,8 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    <!--注入数据源--> <property name="dataSource" ref="dataSource"></property>
    </bean> 2、在 spring 配置文件，开启事务注解
    （1）在 spring 配置文件引入名称空间 tx
+
+   ```xml
    <beans xmlns="http://www.springframework.org/schema/beans"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xmlns:context="http://www.springframework.org/schema/context"
@@ -1435,8 +1439,17 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    http://www.springframework.org/schema/aop 
    http://www.springframework.org/schema/aop/spring-aop.xsd
    http://www.springframework.org/schema/tx 
-   http://www.springframework.org/schema/tx/spring-tx.xsd"> （2）开启事务注解
-   <!--开启事务注解--> <tx:annotation-driven transaction￾manager="transactionManager"></tx:annotation-driven> 3、在 service 类上面（或者 service 类里面方法上面）添加事务注解
+   http://www.springframework.org/schema/tx/spring-tx.xsd"> 
+   ```
+
+   （2）开启事务注解
+
+   ```xml
+   <!--开启事务注解--> 
+   <tx:annotation-driven transaction￾manager="transactionManager"></tx:annotation-driven> 
+   ```
+
+   3、在 service 类上面（或者 service 类里面方法上面）添加事务注解
    （1）@Transactional，这个注解添加到类上面，也可以添加方法上面
    （2）如果把这个注解添加类上面，这个类里面所有的方法都添加事务
    （3）如果把这个注解添加方法上面，为这个方法添加事务
@@ -1470,13 +1483,20 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    第一步 配置事务管理器
    第二步 配置通知
    第三步 配置切入点和切面
-   <!--1 创建事务管理器--> <bean id="transactionManager" 
+
+   ```xml
+   <!--1 创建事务管理器-->
+   <bean id="transactionManager" 
    class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-   <!--注入数据源--> <property name="dataSource" ref="dataSource"></property>
+   <!--注入数据源--> 
+     <property name="dataSource" ref="dataSource"></property>
    </bean>
-   <!--2 配置通知--> <tx:advice id="txadvice">
-   <!--配置事务参数--> <tx:attributes>
-   <!--指定哪种规则的方法上面添加事务--> <tx:method name="accountMoney" propagation="REQUIRED"/>
+   <!--2 配置通知-->
+   <tx:advice id="txadvice">
+   <!--配置事务参数--> 
+     <tx:attributes>
+   <!--指定哪种规则的方法上面添加事务--> 
+       <tx:method name="accountMoney" propagation="REQUIRED"/>
    <!--<tx:method name="account*"/>-->
    </tx:attributes>
    </tx:advice>
@@ -1485,8 +1505,16 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    com.alpha.spring5.service.UserService.*(..))"/>
    <!--配置切面--> <aop:advisor advice-ref="txadvice" pointcut-ref="pt"/>
    </aop:config>
+   ```
+
+   
+
+   
+
    事务操作（完全注解声明式事务管理）
    1、创建配置类，使用配置类替代 xml 配置文件
+
+   ```java
    @Configuration //配置类
    @ComponentScan(basePackages = "com.alpha") //组件扫描
    @EnableTransactionManagement //开启事务
@@ -1494,32 +1522,40 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    //创建数据库连接池
    @Bean
    public DruidDataSource getDruidDataSource() {
-   DruidDataSource dataSource = new DruidDataSource();
-   dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-   dataSource.setUrl("jdbc:mysql:///user_db");
-   dataSource.setUsername("root");
-   dataSource.setPassword("root");
-   return dataSource;
+     DruidDataSource dataSource = new DruidDataSource();
+     dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+     dataSource.setUrl("jdbc:mysql:///user_db");
+     dataSource.setUsername("root");
+     dataSource.setPassword("root");
+     return dataSource;
    }
    //创建 JdbcTemplate 对象
    @Bean
    public JdbcTemplate getJdbcTemplate(DataSource dataSource) {
-   //到 ioc 容器中根据类型找到 dataSource
-   JdbcTemplate jdbcTemplate = new JdbcTemplate();
-   //注入 dataSource
-   jdbcTemplate.setDataSource(dataSource);
-   return jdbcTemplate;
+     //到 ioc 容器中根据类型找到 dataSource
+     JdbcTemplate jdbcTemplate = new JdbcTemplate();
+     //注入 dataSource
+     jdbcTemplate.setDataSource(dataSource);
+     return jdbcTemplate;
    }
    //创建事务管理器
    @Bean
    public DataSourceTransactionManager 
-   getDataSourceTransactionManager(DataSource dataSource) {
-   DataSourceTransactionManager transactionManager = new 
-   DataSourceTransactionManager();
-   transactionManager.setDataSource(dataSource);
-   return transactionManager;
-   } }
-   Spring5 框架新功能
+     getDataSourceTransactionManager(DataSource dataSource) {
+     DataSourceTransactionManager transactionManager = new 
+     DataSourceTransactionManager();
+     transactionManager.setDataSource(dataSource);
+     return transactionManager;
+   	} 
+   }
+   ```
+
+   
+
+   
+
+   ##  Spring5 框架新功能
+
    1、整个 Spring5 框架的代码基于 Java8，运行时兼容 JDK9，许多不建议使用的类和方
    法在代码库中删除
    2、Spring 5.0 框架自带了通用的日志封装
@@ -1527,6 +1563,8 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    （2）Spring5 框架整合 Log4j2
    第一步 引入 jar 包
    第二步 创建 log4j2.xml 配置文件
+
+   ```xml
    <?xml version="1.0" encoding="UTF-8"?>
    <!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > 
    ALL -->
@@ -1543,13 +1581,18 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    默认的日志输出--> <loggers> <root level="info"> <appender-ref ref="Console"/>
    </root>
    </loggers>
-   </configuration> 3、Spring5 框架核心容器支持@Nullable 注解
+   </configuration>
+   ```
+
+    3、Spring5 框架核心容器支持@Nullable 注解
    （1）@Nullable 注解可以使用在方法上面，属性上面，参数上面，表示方法返回可以为空，属性值可以
    为空，参数值可以为空
    （2）注解用在方法上面，方法返回值可以为空
    （3）注解使用在方法参数里面，方法参数可以为空
    （4）注解使用在属性上面，属性值可以为空
    4、Spring5 核心容器支持函数式风格 GenericApplicationContext
+
+   ```java
    //函数式风格创建对象，交给 spring 进行管理
    @Test
    public void testGenericApplicationContext() {
@@ -1562,10 +1605,15 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    // User user = (User)context.getBean("com.alpha.spring5.test.User");
    User user = (User)context.getBean("user1");
    System.out.println(user);
-   }5、Spring5 支持整合 JUnit5
+   }
+   ```
+
+   5、Spring5 支持整合 JUnit5
    （1）整合 JUnit4
    第一步 引入 Spring 相关针对测试依赖
    第二步 创建测试类，使用注解方式完成
+
+   ```java
    @RunWith(SpringJUnit4ClassRunner.class) //单元测试框架
    @ContextConfiguration("classpath:bean1.xml") //加载配置文件
    public class JTest4 {
@@ -1574,9 +1622,14 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    @Test
    public void test1() {
    userService.accountMoney();
-   } }（2）Spring5 整合 JUnit5
+   } }
+   ```
+
+   （2）Spring5 整合 JUnit5
    第一步 引入 JUnit5 的 jar 包
    第二步 创建测试类，使用注解完成
+
+   ```java
    @ExtendWith(SpringExtension.class)
    @ContextConfiguration("classpath:bean1.xml")
    public class JTest5 {
@@ -1585,7 +1638,14 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    @Test
    public void test1() {
    userService.accountMoney();
-   } }（3）使用一个复合注解替代上面两个注解完成整合
+   } }
+   ```
+
+   
+
+   （3）使用一个复合注解替代上面两个注解完成整合
+
+   ```java
    @SpringJUnitConfig(locations = "classpath:bean1.xml")
    public class JTest5 {
    @Autowired
@@ -1594,6 +1654,10 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    public void test1() {
    userService.accountMoney();
    } }
+   ```
+
+
+   
    Spring5 框架新功能（Webflux） 1、SpringWebflux 介绍
    （1）是 Spring5 添加新的模块，用于 web 开发的，功能和 SpringMVC 类似的，Webflux 使用
    当前一种比较流程响应式编程出现的框架。
@@ -1624,7 +1688,11 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    式，而包含公式的单元格的值会依据其他单元格的值的变化而变化。
    （2）Java8 及其之前版本
 
- - 提供的观察者模式两个类 Observer 和 Observable
+   提供的观察者模式两个类 Observer 和 Observable
+
+   
+
+   ```java
    public class ObserverDemo extends Observable {
    public static void main(String[] args) {
    ObserverDemo observer = new ObserverDemo();
@@ -1637,7 +1705,12 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    });
    observer.setChanged(); //数据变化
    observer.notifyObservers(); //通知
-   } }3、响应式编程（Reactor 实现）
+   } }
+   ```
+
+   
+
+   3、响应式编程（Reactor 实现）
    （1）响应式编程操作中，Reactor 是满足 Reactive 规范框架
    （2）Reactor 有两个核心类，Mono 和 Flux，这两个类实现接口 Publisher，提供丰富操作
    符。Flux 对象实现发布者，返回 N 个元素；Mono 实现发布者，返回 0 或者 1 个元素
@@ -1761,7 +1834,9 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    public Mono<Void> saveUser(@RequestBody User user) {
    Mono<User> userMono = Mono.just(user);
    return userService.saveUserInfo(userMono);
-   } }⚫ 说明
+   } }
+
+    说明
    SpringMVC 方式实现，同步阻塞的方式，基于 SpringMVC+Servlet+Tomcat
    SpringWebflux 方式实现，异步非阻塞 方式，基于 SpringWebflux+Reactor+Netty
    6、SpringWebflux（基于函数式编程模型）
@@ -1771,116 +1846,161 @@ destroy-method="close"> <property name="url" value="jdbc:mysql:///user_db" />
    式接口的实现并且启动需要的服务器。
    （ 3 ） SpringWebflux 请 求 和 响 应 不 再 是 ServletRequest 和 ServletResponse ，而是
    ServerRequest 和 ServerResponse
-   第一步 把注解编程模型工程复制一份 ，保留 entity 和 service 内容
-   第二步 创建 Handler（具体实现方法）
+   **第一步 把注解编程模型工程复制一份 ，保留 entity 和 service 内容**
+   **第二步 创建 Handler（具体实现方法）**
+
+   ```java
    public class UserHandler {
    private final UserService userService;
    public UserHandler(UserService userService) {
-   this.userService = userService;
+   	this.userService = userService;
    }
    //根据 id 查询
    public Mono<ServerResponse> getUserById(ServerRequest request) {
-   //获取 id 值
-   int userId = Integer.valueOf(request.pathVariable("id"));
-   //空值处理
-   Mono<ServerResponse> notFound = ServerResponse.notFound().build();
-   //调用 service 方法得到数据
-   Mono<User> userMono = this.userService.getUserById(userId);
-   //把 userMono 进行转换返回
-   //使用 Reactor 操作符 flatMap
-   return
-   userMono
-   .flatMap(person -> 
-   ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-   .body(fromObject(person)))
-   .switchIfEmpty(notFound);
+     //获取 id 值
+     int userId = Integer.valueOf(request.pathVariable("id"));
+     //空值处理
+     Mono<ServerResponse> notFound = ServerResponse.notFound().build();
+     //调用 service 方法得到数据
+     Mono<User> userMono = this.userService.getUserById(userId);
+     //把 userMono 进行转换返回
+     //使用 Reactor 操作符 flatMap
+     return
+     userMono
+     .flatMap(person -> 
+     ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
+     .body(fromObject(person)))
+     .switchIfEmpty(notFound);
    }
    //查询所有
    public Mono<ServerResponse> getAllUsers() {
-   //调用 service 得到结果
-   Flux<User> users = this.userService.getAllUser();
-   return 
-   ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(users,User.cl
-   ass);
+     //调用 service 得到结果
+     Flux<User> users = this.userService.getAllUser();
+     return 
+     ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(users,User.cl
+     ass);
    }
    //添加
    public Mono<ServerResponse> saveUser(ServerRequest request) {
-   //得到 user 对象
-   Mono<User> userMono = request.bodyToMono(User.class);
-   return 
-   ServerResponse.ok().build(this.userService.saveUserInfo(userMono));
-   } }
-   第三步 初始化服务器，编写 Router
-   ⚫ 创建路由的方法
+     //得到 user 对象
+     Mono<User> userMono = request.bodyToMono(User.class);
+     return 
+     ServerResponse.ok().build(this.userService.saveUserInfo(userMono));
+     } 
+   }
+   ```
+
+   
+
+   **第三步 初始化服务器，编写 Router**
+    创建路由的方法
+
+   ```java
    //1 创建 Router 路由
    public RouterFunction<ServerResponse> routingFunction() {
-   //创建 hanler 对象
-   UserService userService = new UserServiceImpl();
-   UserHandler handler = new UserHandler(userService);
-   //设置路由
-   return RouterFunctions.route(
-   GET("/users/{id}").and(accept(APPLICATION_JSON)),handler::getUserById)
-   .andRoute(GET("/users").and(accept(APPLICATION_JSON)),handler::get
-   AllUsers);
+     //创建 hanler 对象
+     UserService userService = new UserServiceImpl();
+     UserHandler handler = new UserHandler(userService);
+     //设置路由
+     return RouterFunctions.route(
+     GET("/users/{id}").and(accept(APPLICATION_JSON)),handler::getUserById)
+     .andRoute(GET("/users").and(accept(APPLICATION_JSON)),handler::get
+     AllUsers);
    }
-   ⚫ 创建服务器完成适配
+   ```
+
+
+   **创建服务器完成适配**
+
+   ```java
    //2 创建服务器完成适配
    public void createReactorServer() {
-   //路由和 handler 适配
-   RouterFunction<ServerResponse> route = routingFunction();
-   HttpHandler httpHandler = toHttpHandler(route);
-   ReactorHttpHandlerAdapter adapter = new 
-   ReactorHttpHandlerAdapter(httpHandler);
-   //创建服务器
-   HttpServer httpServer = HttpServer.create();
-   httpServer.handle(adapter).bindNow();
-   }⚫ 最终调用
+     //路由和 handler 适配
+     RouterFunction<ServerResponse> route = routingFunction();
+     HttpHandler httpHandler = toHttpHandler(route);
+     ReactorHttpHandlerAdapter adapter = new 
+     ReactorHttpHandlerAdapter(httpHandler);
+     //创建服务器
+     HttpServer httpServer = HttpServer.create();
+     httpServer.handle(adapter).bindNow();
+   }
+   ```
+
+   **最终调用**
+
+   ```java
    public static void main(String[] args) throws Exception{
-   Server server = new Server();
-   server.createReactorServer();
-   System.out.println("enter to exit");
-   System.in.read();
-   }（4）使用 WebClient 调用
+     Server server = new Server();
+     server.createReactorServer();
+     System.out.println("enter to exit");
+     System.in.read();
+   }
+   ```
+
+   **（4）使用 WebClient 调用**
+
+   ```java
    public class Client {
    public static void main(String[] args) {
-   //调用服务器地址
-   WebClient webClient = WebClient.create("http://127.0.0.1:5794");
-   //根据 id 查询
-   String id = "1";
-   User userresult = webClient.get().uri("/users/{id}", id)
-   .accept(MediaType.APPLICATION_JSON).retrieve().bodyToMono(User
-   .class)
-   .block();
-   System.out.println(userresult.getName());
-   //查询所有
-   Flux<User> results = webClient.get().uri("/users")
-   .accept(MediaType.APPLICATION_JSON).retrieve().bodyToFlux(User
-   .class);
-   results.map(stu -> stu.getName())
-   .buffer().doOnNext(System.out::println).blockFirst();
-   } }
-   课程总结
-   1、Spring 框架概述
-   （1）轻量级开源 JavaEE 框架，为了解决企业复杂性，两个核心组成：IOC 和 AOP
-   （2）Spring5.2.6 版本
-   2、IOC 容器
-   （1）IOC 底层原理（工厂、反射等）
-   （2）IOC 接口（BeanFactory） （3）IOC 操作 Bean 管理（基于 xml） （4）IOC 操作 Bean 管理（基于注解）
-   3、Aop
-   （1）AOP 底层原理：动态代理，有接口（JDK 动态代理），没有接口（CGLIB 动态代理）
-   （2）术语：切入点、增强（通知）、切面
-   （3）基于 AspectJ 实现 AOP 操作
-   4、JdbcTemplate
-   （1）使用 JdbcTemplate 实现数据库 curd 操作
-   （2）使用 JdbcTemplate 实现数据库批量操作
-   5、事务管理
-   （1）事务概念
-   （2）重要概念（传播行为和隔离级别）
-   （3）基于注解实现声明式事务管理
-   （4）完全注解方式实现声明式事务管理
-   6、Spring5 新功能
-   （1）整合日志框架
-   （2）@Nullable 注解
-   （3）函数式注册对象
-   （4）整合 JUnit5 单元测试框架
-   （5）SpringWebflux 使用
+     //调用服务器地址
+     WebClient webClient = WebClient.create("http://127.0.0.1:5794");
+     //根据 id 查询
+     String id = "1";
+     User userresult = webClient.get().uri("/users/{id}", id)
+     .accept(MediaType.APPLICATION_JSON).retrieve().bodyToMono(User
+     .class)
+     .block();
+     System.out.println(userresult.getName());
+   	//查询所有
+     Flux<User> results = webClient.get().uri("/users")
+     .accept(MediaType.APPLICATION_JSON).retrieve().bodyToFlux(User
+     .class);
+     results.map(stu -> stu.getName())
+     .buffer().doOnNext(System.out::println).blockFirst();
+     } 
+   }
+   ```
+
+   
+
+   
+
+   
+
+   ## 总结
+
+   ### 1、Spring 框架概述
+
+   **（1）轻量级开源 JavaEE 框架，为了解决企业复杂性，两个核心组成：IOC 和 AOP**
+   **（2）Spring5.2.6 版本**
+
+   ### 2、IOC 容器
+
+   **（1）IOC 底层原理（工厂、反射等）**
+   **（2）IOC 接口（BeanFactory） （3）IOC 操作 Bean 管理（基于 xml） （4）IOC 操作 Bean 管理（基于注解）**
+
+   ### 3、Aop
+
+   （**1）AOP 底层原理：动态代理，有接口（JDK 动态代理），没有接口（CGLIB 动态代理）**
+   **（2）术语：切入点、增强（通知）、切面**
+   **（3）基于 AspectJ 实现 AOP 操作**
+
+   ### 4、JdbcTemplate
+
+   **（1）使用 JdbcTemplate 实现数据库 curd 操作**
+   **（2）使用 JdbcTemplate 实现数据库批量操作**
+
+   ### 5、事务管理
+
+   **（1）事务概念**
+   **（2）重要概念（传播行为和隔离级别）**
+   **（3）基于注解实现声明式事务管理**
+   **（4）完全注解方式实现声明式事务管理**
+
+   ### 6、Spring5 新功能
+
+   （**1）整合日志框架**
+   **（2）@Nullable 注解**
+   **（3）函数式注册对象**
+   **（4）整合 JUnit5 单元测试框架**
+   **（5）SpringWebflux 使用**
